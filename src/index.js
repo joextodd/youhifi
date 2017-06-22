@@ -26,6 +26,10 @@ const playPage = (s, a) =>
         h('audio', {
           src: s.track.url ? `${baseUrl}/proxy/${s.track.url}` : '',
           controls: 'yes', crossorigin: 'anonymous', autoplay: 'yes',
+          oncreate: e => {
+            e.onended = a.nextVideo
+            e.ontimeupdate = s.iOS && audio.currentTime > audio.duration / 2 && a.nextVideo()
+          }
         }, '')
       ])
     ])
@@ -35,9 +39,24 @@ app({
   state: {
     id: '',
     track: {},
+    player: document.querySelector('audio'),
+    iOS: /iPad|iPhone|iPod/.test(navigator.userAgent) && !window.MSStream,
+  },
+  events: {
+    update: console.log
   },
   actions: {
-    setTrack: (s,a,d) => ({ track: d }),
+    nextVideo: (s,a,d) =>
+      fetch(`${baseUrl}/video/${s.id}/next`)
+      .then(response => response.json())
+      .then(a.setTrack)
+      .then(a.getVideo),
+    getVideo: (s,a,d) =>
+      fetch(`${baseUrl}/video/${s.id}`)
+      .then(response => response.json())
+      .then(a.setTrack)
+      .catch(console.log),
+    setTrack: (s,a,d) => ({ id: d.id || s.id, track: d }),
     decodeURL: (s,a,d) => {
       const re = /(?:youtube\.com\/(?:[^\/]+\/.+\/|(?:v|e(?:mbed)?)\/|.*[?&]v=)|youtu\.be\/)([^"&?\/ ]{11})/i;
       const match = d.match(re);
