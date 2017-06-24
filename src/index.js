@@ -73,7 +73,7 @@ app({
   },
   actions: {
     setId: (s,a,d) => ({ id: d }),
-    toggleFetching: (s,a,d) => ({ isFetching: d }),
+    setFetching: (s,a,d) => ({ isFetching: d }),
     nextVideo: (s,a,d) => {
       s.player.pause()
       fetch(`${url}/video/${s.id}/next`)
@@ -82,13 +82,13 @@ app({
       .catch(console.log)
     },
     getVideo: (s,a,d) => {
-      a.toggleFetching(true)
+      a.setFetching(true)
       fetch(`${url}/video/${s.id}`)
       .then(r => r.json())
       .then(d => {
         a.setTrack(d)
         a.addTrack(d)
-        a.toggleFetching(false)
+        a.setFetching(false)
       })
       .catch(console.log)
     },
