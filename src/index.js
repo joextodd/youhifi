@@ -74,11 +74,13 @@ app({
   actions: {
     setId: (s,a,d) => ({ id: d }),
     toggleFetching: (s,a,d) => ({ isFetching: d }),
-    nextVideo: (s,a,d) =>
+    nextVideo: (s,a,d) => {
+      s.player.pause()
       fetch(`${url}/video/${s.id}/next`)
       .then(r => r.json())
       .then(d => a.router.go(`/play/${d.id}`))
-      .catch(console.log),
+      .catch(console.log)
+    },
     getVideo: (s,a,d) => {
       a.toggleFetching(true)
       fetch(`${url}/video/${s.id}`)
