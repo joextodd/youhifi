@@ -82,6 +82,8 @@ page {
     justify-content: center;
     align-items: center;
 
+    >*+* { margin-top: 2rem; }
+
     img {
       flex: none;
       width: 80vmin;
@@ -94,18 +96,22 @@ page {
     width: 100%;
     color: rgba(255, 255, 255, 0.5);
     text-align: center;
-    padding: 1rem 2rem 0;
     text-transform: uppercase;
     font-size: 0.75rem;
+    letter-spacing: .05rem;
+    max-width: 60ex;
+    padding: 0 2rem;
   }
 
   controls- {
-    position: absolute;
     display: flex;
     justify-content: center;
-    padding: 20px 10px;
-    bottom: 0;
-    width: 100%;
+
+    button {
+      color: white;
+      cursor: pointer;
+      padding: 0.5rem;
+    }
   }
 }
 
@@ -115,12 +121,6 @@ audio {
   left: 0;
   position: fixed;
   padding-top: 25px;
-}
-
-button {
-  color: white;
-  cursor: pointer;
-  padding: 0.8rem;
 }
 
 svg#sheet {
@@ -133,7 +133,11 @@ svg {
   height: 2rem;
 }
 
-.large {
-  width: 3rem;
-  height: 3rem;
+button.play svg,
+button.pause svg {
+  width: 4rem;
+  height: 4rem;
 }
+
+.play svg:first-child { display: none; }
+.pause svg:last-child { display: none; }

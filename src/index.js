@@ -3,8 +3,8 @@ import { Player } from './player'
 import './index.scss'
 
 const url = 'https://youtube.joextodd.com'
-const Use = (href, style) =>
-  h('svg', { class: style }, [
+const Use = href =>
+  h('svg', {}, [
     h('use', { oncreate: e =>
     e.setAttributeNS(
       'http://www.w3.org/1999/xlink',
@@ -30,26 +30,30 @@ const lostPage = (s,a) =>
 const playPage = (s,a) =>
   h('page', {}, [
     h('main', {}, [
-      h('img', { src: s.id && `https://img.youtube.com/vi/${s.id}/hqdefault.jpg` }),
       h('title-', {}, s.track ? s.track.title : ''),
+      h('img', { src: s.id && `https://img.youtube.com/vi/${s.id}/hqdefault.jpg` }),
       h('audio', {
-        src: s.track && `${url}/proxy/${s.track.url}`,
+        src: s.track && s.track.url && `${url}/proxy/${s.track.url}`,
         crossorigin: 'anonymous', autoplay: 'yes',
         oncreate: e => {
           e.onended = a.nextVideo
           e.ontimeupdate = s.iOS && a.iosDuration() && a.nextVideo()
           s.player = e
         }
-      })
-    ]),
-    h('controls-', {}, [
-      h('button', {}, Use('#previous')),
-      h('button', { onclick: e => a.rewind() }, Use('#rewind')),
-      h('button', { onclick: e => a.playPause() },
-        s.playing ? Use('#pause', 'large') : Use('#play', 'large')
-      ),
-      h('button', { onclick: e => a.forwards() }, Use('#forwards')),
-      h('button', { onclick: e => a.nextVideo() }, Use('#next')),
+      }),
+      s.player && h('controls-', {}, [
+        h('button', {}, Use('#previous')),
+        h('button', { onclick: e => a.rewind() }, Use('#rewind')),
+        h('button', {
+          class: s.playing ? 'pause' : 'play',
+          onclick: e => a.playPause()
+        },[
+          Use('#play'),
+          Use('#pause'),
+        ]),
+        h('button', { onclick: e => a.forwards() }, Use('#forwards')),
+        h('button', { onclick: e => a.nextVideo() }, Use('#next')),
+      ]),
     ]),
   ])
 
@@ -78,7 +82,6 @@ app({
     }
   },
   events: {
-    action: (s,a,d) => console.log(s,d),
     route: (s,a,d) => {
       if (d.match === '/play/:id') {
         a.setId(d.params.id)
