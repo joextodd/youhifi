@@ -26,13 +26,9 @@ const homePage = (s,a) =>
   ])
 
 const Spinner = (s,a) =>
-  <div class="spinner">
-    <div class="rect1"></div>
-    <div class="rect2"></div>
-    <div class="rect3"></div>
-    <div class="rect4"></div>
-    <div class="rect5"></div>
-  </div>
+  h('div', { class: 'spinner' },
+    [1,2,3,4,5].map(x => h('div', { class: `rect${x}` }))
+  )
 
 const lostPage = (s,a) =>
   h('h1', { onclick: e => a.router.go('/') }, 'Back to {location.hostname}')
