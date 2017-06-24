@@ -14,7 +14,7 @@
     },
     "bundle": {
       "patterns": "src",
-      "extensions": "*",
+      "extensions": "*.{scss,js}",
       "quiet": true
     },
     "server": {
