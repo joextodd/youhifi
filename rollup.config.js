@@ -7,6 +7,9 @@ import scss from 'rollup-plugin-scss'
 export default {
   format: 'iife',
   sourceMap: false,
+  moduleContext: {
+    'node_modules/whatwg-fetch/fetch.js': 'window',
+  },
   plugins: [
     scss(),
     commonjs(),

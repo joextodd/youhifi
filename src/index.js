@@ -1,5 +1,6 @@
 import { h, app, Router } from 'hyperapp'
 import { Player } from './player'
+import 'whatwg-fetch'
 import './index.scss'
 import './spinner.scss'
 
