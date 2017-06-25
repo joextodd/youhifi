@@ -1,11 +1,13 @@
 import { h } from 'hyperapp'
+import { input } from '../components/input'
+
 export default (s,a) =>
-  h('section', {}, [
-    h('form', {}, [
-      h('input', {
-        type: 'text',
-        placeholder: 'Enter YouTube URL...',
-        oninput: e => a.decodeURL(e.target.value),
-      }),
-    ])
+  h('page', {}, [
+    h('form', {}, input(s,a)),
+    h('search-', {}, s.search.map((item) =>
+      h('a', { href: `/play/${item.id.videoId}` }, [
+        h('img', { src: `https://img.youtube.com/vi/${item.id.videoId}/hqdefault.jpg` }),
+        h('title-', {}, item.snippet.title),
+      ])
+    ))
   ])
