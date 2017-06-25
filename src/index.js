@@ -1,5 +1,6 @@
 import { h, app, Router } from 'hyperapp'
 import { Player } from './mixins/player'
+import { YouTube } from './mixins/youtube'
 
 import homePage from './pages/home'
 import playPage from './pages/play'
@@ -65,5 +66,5 @@ app({
     ['/play/:id', playPage],
     ['*', lostPage],
   ],
-  mixins: [Router, Player],
+  mixins: [Router, Player, YouTube],
 })
