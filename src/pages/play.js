@@ -19,7 +19,7 @@ export default (s,a) =>
         }
       }),
       s.player && h('controls-', {}, [
-        h('button', {}, svg('#previous')),
+        h('button', { onclick: e => a.previous() }, svg('#previous')),
         h('button', { onclick: e => a.rewind() }, svg('#rewind')),
         h('button', {
           class: s.playing ? 'pause' : 'play',

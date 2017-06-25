@@ -16,9 +16,9 @@ const lostPage = (s,a) =>
 app({
   state: {
     id: '',
-    isFetching: true,
     track: {},
     tracks: [],
+    isFetching: true,
     iOS: /iPad|iPhone|iPod/.test(navigator.userAgent) && !window.MSStream,
   },
   actions: {
@@ -43,7 +43,7 @@ app({
       .catch(console.log)
     },
     setTrack: (s,a,d) => ({ id: d.id || s.id, track: d }),
-    addTrack: (s,a,d) => ({ tracks: s.tracks.concat(d) }),
+    addTrack: (s,a,d) => ({ tracks: s.tracks.concat(d.id || s.id) }),
     decodeURL: (s,a,d) => {
       const re = /(?:youtube\.com\/(?:[^\/]+\/.+\/|(?:v|e(?:mbed)?)\/|.*[?&]v=)|youtu\.be\/)([^"&?\/ ]{11})/i;
       const match = d.match(re);
