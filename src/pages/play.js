@@ -23,7 +23,7 @@ export default (s,a) =>
         }
       }),
       s.player && h('controls-', {}, [
-        h('button', { onclick: e => window.history.back() }, svg('#previous')),
+        h('button', { onclick: e => a.pause() || window.history.back() }, svg('#previous')),
         h('button', { onclick: e => a.rewind() }, svg('#rewind')),
         h('button', {
           class: s.playing ? 'pause' : 'play',
