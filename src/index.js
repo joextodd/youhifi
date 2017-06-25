@@ -45,11 +45,6 @@ app({
     },
     setTrack: (s,a,d) => ({ id: d.id || s.id, track: d }),
     addTrack: (s,a,d) => ({ tracks: s.tracks.concat(d) }),
-    decodeURL: (s,a,d) => {
-      const re = /(?:youtube\.com\/(?:[^\/]+\/.+\/|(?:v|e(?:mbed)?)\/|.*[?&]v=)|youtu\.be\/)([^"&?\/ ]{11})/i;
-      const match = d.match(re);
-      if (match.length > 1) a.router.go(`/play/${match[1]}`)
-    }
   },
   events: {
     // action: console.log,
