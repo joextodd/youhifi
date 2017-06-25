@@ -28,6 +28,10 @@ noscript {
   font-weight: bold;
 }
 
+button {
+  touch-action: manipulation;
+}
+
 h1 {
   margin: auto;
   font-size: 1rem;
