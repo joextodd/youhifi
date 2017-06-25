@@ -16,16 +16,16 @@ const lostPage = (s,a) =>
 app({
   state: {
     id: '',
-    isFetching: true,
     track: {},
     tracks: [],
+    isFetching: true,
     iOS: /iPad|iPhone|iPod/.test(navigator.userAgent) && !window.MSStream,
   },
   actions: {
     setId: (s,a,d) => ({ id: d }),
     setFetching: (s,a,d) => ({ isFetching: d }),
     nextVideo: (s,a,d) => {
-      s.player.pause()
+      a.pause()
       fetch(`${url}/video/${s.id}/next`)
       .then(r => r.json())
       .then(d => a.router.go(`/play/${d.id}`))
@@ -51,9 +51,11 @@ app({
     }
   },
   events: {
+    // action: console.log,
     route: (s,a,d) => {
       if (d.match === '/play/:id') {
         a.setId(d.params.id)
+        a.setPlaying(!s.iOS)
         a.getVideo()
       }
     }
