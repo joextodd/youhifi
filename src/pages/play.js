@@ -11,15 +11,19 @@ export default (s,a) =>
       h('img', { src: s.id && `https://img.youtube.com/vi/${s.id}/hqdefault.jpg` }),
       h('audio', {
         src: s.track && s.track.url && `${url}/proxy/${s.track.url}`,
-        crossorigin: 'anonymous', autoplay: 'yes',
+        crossorigin: 'anonymous',
+        autoplay: !s.iOS ? 'yes' : '',
         oncreate: e => {
           e.onended = a.nextVideo
-          e.ontimeupdate = s.iOS && a.iosDuration() && a.nextVideo()
+          e.ontimeupdate = () => s.iOS &&
+            (s.player.currentTime > s.player.duration / 2)
+            ? a.nextVideo()
+            : null
           s.player = e
         }
       }),
       s.player && h('controls-', {}, [
-        h('button', {}, svg('#previous')),
+        h('button', { onclick: e => window.history.back() }, svg('#previous')),
         h('button', { onclick: e => a.rewind() }, svg('#rewind')),
         h('button', {
           class: s.playing ? 'pause' : 'play',
