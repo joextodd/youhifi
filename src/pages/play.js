@@ -1,5 +1,5 @@
 import { h } from 'hyperapp'
-import { svg } from '../components/use'
+import { svg } from '../components/svg'
 import { spinner } from '../components/spinner'
 
 const url = 'https://youtube.joextodd.com'
