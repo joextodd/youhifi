@@ -110,7 +110,7 @@ page {
     color: rgba(255, 255, 255, 0.4);
     text-align: center;
     text-transform: uppercase;
-    font-size: calc(10px + 1vh);;
+    font-size: calc(10px + 1vh);
     font-weight: lighter;
     letter-spacing: .1rem;
     max-width: 60ex;
@@ -163,6 +163,7 @@ page {
       title- {
         margin-left: auto;
         margin-right: auto;
+        height: auto;
       }
     }
   }
