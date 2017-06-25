@@ -1,5 +1,6 @@
 import { h, app, Router } from 'hyperapp'
 import { Player } from './mixins/player'
+import { YouTube } from './mixins/youtube'
 
 import homePage from './pages/home'
 import playPage from './pages/play'
@@ -44,11 +45,6 @@ app({
     },
     setTrack: (s,a,d) => ({ id: d.id || s.id, track: d }),
     addTrack: (s,a,d) => ({ tracks: s.tracks.concat(d) }),
-    decodeURL: (s,a,d) => {
-      const re = /(?:youtube\.com\/(?:[^\/]+\/.+\/|(?:v|e(?:mbed)?)\/|.*[?&]v=)|youtu\.be\/)([^"&?\/ ]{11})/i;
-      const match = d.match(re);
-      if (match.length > 1) a.router.go(`/play/${match[1]}`)
-    }
   },
   events: {
     // action: console.log,
@@ -65,5 +61,5 @@ app({
     ['/play/:id', playPage],
     ['*', lostPage],
   ],
-  mixins: [Router, Player],
+  mixins: [Router, Player, YouTube],
 })
