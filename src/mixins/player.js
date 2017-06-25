@@ -11,6 +11,9 @@ export const Player = () => ({
       s.player.paused ? s.player.play() : s.player.pause()
       return ({ playing: s.player.paused })
     },
+    previous: (s,a,d) => {
+      window.history.back();
+    },
     rewind: (s,a,d) => {
       s.player.currentTime = Math.max(s.player.currentTime - 10, 0)
     },
