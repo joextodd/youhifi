@@ -140,6 +140,23 @@ page {
     }
   }
 
+  home {
+    position: absolute;
+    z-index: 1;
+    padding: 1rem;
+
+    svg {
+      fill: white;
+      fill-opacity: 0.5;
+      width: 1.6rem;
+      height: 1.6rem;
+
+      &:hover {
+        fill-opacity: 0.9;
+      }
+    }
+  }
+
   search- {
     margin-top: -10vh;
     *+* { margin-top: 3rem; }
