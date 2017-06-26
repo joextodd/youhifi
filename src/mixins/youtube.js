@@ -26,6 +26,7 @@ export const YouTube = () => ({
       .catch(console.log)
     },
     search: (s,a,d) => {
+      a.setSearchString(d.target.value)
       fetch(`${s.url}/search` +
             '?part=snippet' +
             `&maxResults=${s.results}` +
