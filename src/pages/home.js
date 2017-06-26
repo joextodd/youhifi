@@ -8,9 +8,8 @@ export default (s,a) =>
   h('page', {}, [
     h('header', {}, input({
       placeholder: 'Search Youtube',
-      value: s.searchString,
       action: a.search,
-      debounce: 300,
+      debounce: 500,
     })),
     ul({
       class: 'search-results',

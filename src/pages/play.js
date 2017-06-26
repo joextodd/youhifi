@@ -4,6 +4,9 @@ import { svg, img, button } from 'huy'
 
 const url = 'https://youtube.joextodd.com'
 
+const ytThumb = id =>
+  `https://img.youtube.com/vi/${id}/hqdefault.jpg`
+
 export default (s,a) =>
   h('page', {}, [
     h('main', {}, [
