@@ -20,6 +20,7 @@ const debounced = fn => debounce(fn, 300)
 export const input = (s,a) => {
   return h('input', {
     placeholder: 'Search YouTube',
-    oninput: debounced(a.search)
+    oninput: debounced(a.search),
+    onchange: e => a.setSearchString(e.target.value)
   })
 }
