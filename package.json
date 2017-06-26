@@ -41,6 +41,7 @@
     "rollup-plugin-uglify": "^1.0.1"
   },
   "dependencies": {
+    "huy": "^1.0.0",
     "hyperapp": "^0.9.3",
     "whatwg-fetch": "^2.0.3"
   }

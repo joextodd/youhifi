@@ -1,6 +1,6 @@
 import { h } from 'hyperapp'
-import { svg } from '../components/svg'
 import { spinner } from '../components/spinner'
+import { svg, img, button } from 'huy'
 
 const url = 'https://youtube.joextodd.com'
 
@@ -8,7 +8,7 @@ export default (s,a) =>
   h('page', {}, [
     h('main', {}, [
       h('title-', {}, s.isFetching ? spinner() : s.track.title),
-      h('img', { src: s.id && `https://img.youtube.com/vi/${s.id}/hqdefault.jpg` }),
+      img({ src: s.id && `https://img.youtube.com/vi/${s.id}/hqdefault.jpg` }),
       h('audio', {
         src: s.track && s.track.url && `${url}/proxy/${s.track.url}`,
         crossorigin: 'anonymous',
@@ -23,17 +23,17 @@ export default (s,a) =>
         }
       }),
       s.player && h('controls-', {}, [
-        h('button', { onclick: e => a.pause() || window.history.back() }, svg('#previous')),
-        h('button', { onclick: e => a.rewind() }, svg('#rewind')),
-        h('button', {
+        button({ onclick: a.prevVideo }, svg({ href: '#previous' })),
+        button({ onclick: a.rewind }, svg({ href: '#rewind' })),
+        button({
           class: s.playing ? 'pause' : 'play',
           onclick: e => a.playPause()
         },[
-          svg('#play'),
-          svg('#pause'),
+          svg({ href: '#play' }),
+          svg({ href: '#pause' }),
         ]),
-        h('button', { onclick: e => a.forwards() }, svg('#forwards')),
-        h('button', { onclick: e => a.nextVideo() }, svg('#next')),
+        button({ onclick: a.forwards }, svg({ href: '#forwards' })),
+        button({ onclick: a.nextVideo }, svg({ href: '#next' })),
       ]),
     ]),
   ])
