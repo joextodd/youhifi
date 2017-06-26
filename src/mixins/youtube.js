@@ -14,15 +14,20 @@ export const YouTube = () => ({
     setSearchNext: (s,a,d) => ({ search: s.search.concat(d.items) }),
     setSearch: (s,a,d) => ({ search: d.items }),
     setNext: (s,a,d) => ({ next: d.items }),
-    next: (s,a,d) => {
+    nextVideo: (s,a,d) => {
+      a.pause()
+      const idx = parseInt(Math.random() * 9)
       fetch(`${s.url}/search` +
             '?part=snippet' +
             `&maxResults=${s.results}` +
-            `&relatedToVideoId=${d}` +
+            `&relatedToVideoId=${s.id}` +
             '&type=video' +
             `&key=${s.key}`)
       .then(r => r.json())
-      .then(a.setNext)
+      .then(d => {
+        a.setNext(d)
+        a.router.go(`/play/${d.items[idx].id.videoId}`)
+      })
       .catch(console.log)
     },
     search: (s,a,d) => {
