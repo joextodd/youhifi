@@ -6,6 +6,9 @@ const url = 'https://youtube.joextodd.com'
 
 export default (s,a) =>
   h('page', {}, [
+    h('home', {}, [
+      h('a', { href: '/' }, svg('#search'))
+    ]),
     h('main', {}, [
       h('title-', {}, s.isFetching ? spinner() : s.track.title),
       h('img', { src: s.id && `https://img.youtube.com/vi/${s.id}/hqdefault.jpg` }),
