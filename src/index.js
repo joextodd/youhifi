@@ -4,6 +4,7 @@ import { YouTube } from './mixins/youtube'
 
 import homePage from './pages/home'
 import playPage from './pages/play'
+import combinedPage from './pages/combined'
 
 import 'whatwg-fetch'
 import './index.scss'
@@ -64,7 +65,7 @@ app({
   },
   view: [
     ['/', homePage],
-    ['/play/:id', playPage],
+    ['/play/:id', combinedPage],
     ['*', lostPage],
   ],
   mixins: [Router, Player, YouTube],
