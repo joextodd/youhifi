@@ -1,10 +1,9 @@
 import { h, app, Router } from 'hyperapp'
-import { Player } from './mixins/player'
-import { YouTube } from './mixins/youtube'
 
-import homePage from './pages/home'
+import { Player } from './mixins/player'
+import { Search } from './mixins/search'
+
 import playPage from './pages/play'
-import combinedPage from './pages/combined'
 
 import 'whatwg-fetch'
 import './index.scss'
@@ -64,9 +63,8 @@ app({
     }
   },
   view: [
-    ['/', homePage],
-    ['/play/:id', combinedPage],
+    ['/play/:id', playPage],
     ['*', lostPage],
   ],
-  mixins: [Router, Player, YouTube],
+  mixins: [Router, Player, Search],
 })
