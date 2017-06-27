@@ -19,11 +19,13 @@ app({
     id: '',
     track: {},
     tracks: [],
+    error: false,
     isFetching: true,
     iOS: /iPad|iPhone|iPod/.test(navigator.userAgent) && !window.MSStream,
   },
   actions: {
     setId: (s,a,d) => ({ id: d }),
+    setError: (s,a,d) => ({ error: d }),
     setFetching: (s,a,d) => ({ isFetching: d }),
     prevVideo: (s,a,d) => {
       a.pause()
@@ -41,9 +43,9 @@ app({
       fetch(`${url}/video/${s.id}`)
       .then(r => r.json())
       .then(d => {
+        a.setFetching(false)
         a.setTrack(d)
         a.addTrack(d)
-        a.setFetching(false)
       })
       .catch(console.log)
     },
