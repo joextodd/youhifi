@@ -55,7 +55,7 @@ app({
     route: (s,a,d) => {
       if (d.match === '/') {
         window.scroll({
-          top: window.innerHeight * .75,
+          top: window.innerHeight * .8,
           left: 0,
           behavior: 'smooth',
         })
