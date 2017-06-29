@@ -7,7 +7,7 @@ const ytThumb = id =>
 export default (s,a) =>
   h('search-page', {}, [
     input({
-      placeholder: 'Search YouTube audio tracks..',
+      placeholder: 'Search songs, artists, concerts..',
       action: a.search,
       debounce: 500,
     }),
@@ -16,7 +16,12 @@ export default (s,a) =>
       infinite: a.searchNext,
     },
     s.search.map(item =>
-      link(a)({ href: `/play/${item.id.videoId}` },[
+      h('a', {
+        onclick: e =>
+          e.preventDefault()
+          || a.router.go(`/play/${item.id.videoId}`)
+          || window.scrollTo(0,0)
+      },[
         h('div', {
           style: { overflow: 'hidden' }
         },

@@ -1,7 +1,11 @@
 import { h, app, Router } from 'hyperapp'
+import smoothscroll from 'smoothscroll-polyfill'
+
+smoothscroll.polyfill()
 
 import { Player } from './mixins/player'
 import { Search } from './mixins/search'
+import { Scroll } from './mixins/scroll'
 
 import playPage from './pages/play'
 
@@ -12,7 +16,9 @@ import './spinner.scss'
 const url = 'https://youtube.joextodd.com'
 
 const lostPage = (s,a) =>
-  h('h1', { onclick: e => a.router.go('/') }, 'Back to {location.hostname}')
+  h('h1', { onclick: e => a.router.go('/') },
+    `Back to ${location.hostname}`
+  )
 
 app({
   state: {
@@ -53,18 +59,19 @@ app({
     addTrack: (s,a,d) => ({ tracks: s.tracks.concat(d) }),
   },
   events: {
-    // action: console.log,
     route: (s,a,d) => {
       if (d.match === '/play/:id') {
+        s.iOS && a.setError(false)
+        s.player && s.player.pause()
         a.setId(d.params.id)
         a.setPlaying(!s.iOS)
         a.getVideo()
       }
-    }
+    },
   },
   view: [
     ['/play/:id', playPage],
     ['*', lostPage],
   ],
-  mixins: [Router, Player, Search],
+  mixins: [Router, Player, Search, Scroll],
 })

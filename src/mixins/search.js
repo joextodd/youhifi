@@ -8,6 +8,9 @@ export const Search = () => ({
     search: [],
     next: [],
   },
+  events: {
+    loaded: (s,a) => a.search('')
+  },
   actions: {
     setSearchString: (s,a,d) => ({ searchString: d }),
     setSearchToken: (s,a,d) => ({ searchToken: d.nextPageToken }),
@@ -21,6 +24,7 @@ export const Search = () => ({
             '?part=snippet' +
             `&maxResults=${s.results}` +
             `&relatedToVideoId=${s.id}` +
+            '&videoCategoryId=10' +
             '&type=video' +
             `&key=${s.key}`)
       .then(r => r.json())
@@ -31,12 +35,13 @@ export const Search = () => ({
       .catch(console.log)
     },
     search: (s,a,d) => {
-      a.setSearchString(d.target.value)
+      a.setSearchString(d.target ? d.target.value : d)
       fetch(`${s.url}/search` +
             '?part=snippet' +
             `&maxResults=${s.results}` +
-            `&q=${d.target.value}` +
+            `&q=${d.target ? d.target.value : d}` +
             '&type=video' +
+            '&videoCategoryId=10' +
             `&key=${s.key}`)
       .then(r => r.json())
       .then(d => {
@@ -52,6 +57,7 @@ export const Search = () => ({
             `&q=${s.searchString}` +
             '&type=video' +
             `&pageToken=${s.searchToken}` +
+            '&videoCategoryId=10' +
             `&key=${s.key}`)
       .then(r => r.json())
       .then(d => {
