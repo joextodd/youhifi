@@ -1,8 +1,12 @@
 import { h, app, Router } from 'hyperapp'
-import { Player } from './mixins/player'
-import { YouTube } from './mixins/youtube'
+import smoothscroll from 'smoothscroll-polyfill'
 
-import homePage from './pages/home'
+smoothscroll.polyfill()
+
+import { Player } from './mixins/player'
+import { Search } from './mixins/search'
+import { Scroll } from './mixins/scroll'
+
 import playPage from './pages/play'
 
 import 'whatwg-fetch'
@@ -12,27 +16,35 @@ import './spinner.scss'
 const url = 'https://youtube.joextodd.com'
 
 const lostPage = (s,a) =>
-  h('h1', { onclick: e => a.router.go('/') }, 'Back to {location.hostname}')
+  h('h1', { onclick: e => a.router.go('/') },
+    `Back to ${location.hostname}`
+  )
 
 app({
   state: {
     id: '',
     track: {},
     tracks: [],
+    error: false,
     isFetching: true,
     iOS: /iPad|iPhone|iPod/.test(navigator.userAgent) && !window.MSStream,
   },
   actions: {
     setId: (s,a,d) => ({ id: d }),
+    setError: (s,a,d) => ({ error: d }),
     setFetching: (s,a,d) => ({ isFetching: d }),
+    prevVideo: (s,a,d) => {
+      a.pause()
+      window.history.back()
+    },
     getVideo: (s,a,d) => {
       a.setFetching(true)
       fetch(`${url}/video/${s.id}`)
       .then(r => r.json())
       .then(d => {
+        a.setFetching(false)
         a.setTrack(d)
         a.addTrack(d)
-        a.setFetching(false)
       })
       .catch(console.log)
     },
@@ -40,19 +52,27 @@ app({
     addTrack: (s,a,d) => ({ tracks: s.tracks.concat(d) }),
   },
   events: {
-    // action: console.log,
     route: (s,a,d) => {
-      if (d.match === '/play/:id') {
+      if (d.match === '/') {
+        window.scroll({
+          top: window.innerHeight * .8,
+          left: 0,
+          behavior: 'smooth',
+        })
+      }
+      if (d.match === '/:id') {
+        s.iOS && a.setError(false)
+        s.player && s.player.pause()
         a.setId(d.params.id)
         a.setPlaying(!s.iOS)
         a.getVideo()
       }
-    }
+    },
   },
   view: [
-    ['/', homePage],
-    ['/play/:id', playPage],
+    ['/', playPage],
+    ['/:id', playPage],
     ['*', lostPage],
   ],
-  mixins: [Router, Player, YouTube],
+  mixins: [Router, Player, Search, Scroll],
 })

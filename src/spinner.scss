@@ -1,19 +1,20 @@
 .spinner {
+  display: flex;
   margin: 0 auto;
-  width: 4rem;
-  height: 2rem;
+  width: 5rem;
+  height: 3rem;
   text-align: center;
   font-size: 1rem;
 }
 
 .spinner > *+* {
-  margin-left: .1rem;
+  margin-left: 2px;
 }
 
 .spinner > div {
-  background-color: #333;
+  background-color: rgba(255,255,255,.5);
   height: 100%;
-  width: .5rem;
+  width: 16%;
   display: inline-block;
 
   -webkit-animation: sk-stretchdelay 1.2s infinite ease-in-out;

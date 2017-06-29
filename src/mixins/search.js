@@ -1,4 +1,4 @@
-export const YouTube = () => ({
+export const Search = () => ({
   state: {
     url: 'https://www.googleapis.com/youtube/v3',
     key: 'AIzaSyBKrJKFGTSo3YVPyavzo6ngIll3DYIuadQ',
@@ -7,6 +7,9 @@ export const YouTube = () => ({
     searchToken: '',
     search: [],
     next: [],
+  },
+  events: {
+    loaded: (s,a) => a.search('')
   },
   actions: {
     setSearchString: (s,a,d) => ({ searchString: d }),
@@ -21,22 +24,24 @@ export const YouTube = () => ({
             '?part=snippet' +
             `&maxResults=${s.results}` +
             `&relatedToVideoId=${s.id}` +
+            '&videoCategoryId=10' +
             '&type=video' +
             `&key=${s.key}`)
       .then(r => r.json())
       .then(d => {
         a.setNext(d)
-        a.router.go(`/play/${d.items[idx].id.videoId}`)
+        a.router.go(`/${d.items[idx].id.videoId}`)
       })
       .catch(console.log)
     },
     search: (s,a,d) => {
-      a.setSearchString(d.target.value)
+      a.setSearchString(d.target ? d.target.value : d)
       fetch(`${s.url}/search` +
             '?part=snippet' +
             `&maxResults=${s.results}` +
-            `&q=${d.target.value}` +
+            `&q=${d.target ? d.target.value : d}` +
             '&type=video' +
+            '&videoCategoryId=10' +
             `&key=${s.key}`)
       .then(r => r.json())
       .then(d => {
@@ -52,6 +57,7 @@ export const YouTube = () => ({
             `&q=${s.searchString}` +
             '&type=video' +
             `&pageToken=${s.searchToken}` +
+            '&videoCategoryId=10' +
             `&key=${s.key}`)
       .then(r => r.json())
       .then(d => {
