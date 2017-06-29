@@ -19,7 +19,7 @@ export default (s,a) =>
       h('a', {
         onclick: e =>
           e.preventDefault()
-          || a.router.go(`/play/${item.id.videoId}`)
+          || a.router.go(`/${item.id.videoId}`)
           || window.scrollTo(0,0)
       },[
         h('div', {

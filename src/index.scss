@@ -53,6 +53,9 @@ search-page {
   }
   .search-results {
     > *+* { margin-top: 1rem; }
+    &:empty {
+      min-height: 90vh;
+    }
     a {
       position: relative;
       height: 30vh;

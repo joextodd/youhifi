@@ -37,13 +37,6 @@ app({
       a.pause()
       window.history.back()
     },
-    nextVideo: (s,a,d) => {
-      a.pause()
-      fetch(`${url}/video/${s.id}/next`)
-      .then(r => r.json())
-      .then(d => a.router.go(`/play/${d.id}`))
-      .catch(console.log)
-    },
     getVideo: (s,a,d) => {
       a.setFetching(true)
       fetch(`${url}/video/${s.id}`)
@@ -60,7 +53,14 @@ app({
   },
   events: {
     route: (s,a,d) => {
-      if (d.match === '/play/:id') {
+      if (d.match === '/') {
+        window.scroll({
+          top: window.innerHeight * .75,
+          left: 0,
+          behavior: 'smooth',
+        })
+      }
+      if (d.match === '/:id') {
         s.iOS && a.setError(false)
         s.player && s.player.pause()
         a.setId(d.params.id)
@@ -70,7 +70,8 @@ app({
     },
   },
   view: [
-    ['/play/:id', playPage],
+    ['/', playPage],
+    ['/:id', playPage],
     ['*', lostPage],
   ],
   mixins: [Router, Player, Search, Scroll],
