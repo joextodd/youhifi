@@ -5,7 +5,6 @@ smoothscroll.polyfill()
 
 import { Player } from './mixins/player'
 import { Search } from './mixins/search'
-import { Scroll } from './mixins/scroll'
 
 import playPage from './pages/play'
 
@@ -74,5 +73,5 @@ app({
     ['/:id', playPage],
     ['*', lostPage],
   ],
-  mixins: [Router, Player, Search, Scroll],
+  mixins: [Router, Player, Search],
 })
