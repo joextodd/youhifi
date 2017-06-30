@@ -19,7 +19,7 @@ export const Search = () => ({
     setNext: (s,a,d) => ({ next: d.items }),
     nextVideo: (s,a,d) => {
       a.pause()
-      const idx = parseInt(Math.random() * 9)
+      const idx = parseInt(Math.random() * (s.results - 1))
       fetch(`${s.url}/search` +
             '?part=snippet' +
             `&maxResults=${s.results}` +
