@@ -42,6 +42,7 @@ app({
       .then(r => r.json())
       .then(d => {
         a.setFetching(false)
+        document.title = d.title
         a.setTrack(d)
         a.addTrack(d)
       })
