@@ -53,7 +53,15 @@ app({
   },
   events: {
     route: (s,a,d) => {
-      if (d.match === '/') s.player && s.player.pause()
+      if (d.match === '/') {
+        s.player && s.player.pause()
+        s.id &&
+          window.scroll({
+            top: window.innerHeight * .8,
+            left: 0,
+            behavior: 'smooth',
+          })
+      }
       if (d.match === '/:id') {
         s.iOS && a.setError(false)
         s.player && s.player.pause()
