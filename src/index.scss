@@ -52,6 +52,8 @@ search-page {
     width: 100%;
     color: rgba(255,255,255,.8);
     text-shadow: 0 0 1px rgba(0, 0, 0, 0.25);
+    font-weight: lighter;
+    letter-spacing: .05rem;
     &::placeholder {
       color: rgba(255,255,255,.4);
     }
@@ -62,7 +64,8 @@ search-page {
     height: 2rem;
     margin-right: 1rem;
   }
-  input:focus + svg {
+  input:focus + svg,
+  input:hover + svg {
     fill: rgba(255, 255, 255, 0.5);
   }
   .search-results {
