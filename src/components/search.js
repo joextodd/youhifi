@@ -29,16 +29,7 @@ export default (s,a) =>
           || a.router.go(`/${item.id.videoId}`)
           || window.scrollTo(0,0)
       },[
-        h('div', {
-          style: { overflow: 'hidden' }
-        },
-        img({
-          src: ytThumb(item.id.videoId),
-          style: {
-            // filter: 'blur(1rem)',
-            // transform: 'scale(1.5)',
-          },
-        })),
+        img({ src: ytThumb(item.id.videoId) }),
         h('title-', {}, item.snippet.title),
       ])
     )),
