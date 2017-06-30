@@ -1,16 +1,23 @@
 import { h } from 'hyperapp'
-import { link, img, input, ul } from 'huy'
+import { spinner } from '../components/spinner'
+import { link, img, input, ul, svg } from 'huy'
 
 const ytThumb = id =>
   `https://img.youtube.com/vi/${id}/hqdefault.jpg`
 
 export default (s,a) =>
   h('search-page', {}, [
-    input({
-      placeholder: 'Search songs, artists, concerts..',
-      action: a.search,
-      debounce: 500,
-    }),
+    h('form', {
+      action: '#',
+      onsubmit: e => e.preventDefault() || document.activeElement.blur()
+    }, [
+      input({
+        placeholder: 'Search songs or artists..',
+        action: a.search,
+        debounce: 500,
+      }),
+      svg({ href: '#search' }),
+    ]),
     ul({
       class: 'search-results',
       infinite: a.searchNext,
@@ -28,11 +35,12 @@ export default (s,a) =>
         img({
           src: ytThumb(item.id.videoId),
           style: {
-            filter: 'blur(1rem)',
-            transform: 'scale(1.5)',
+            // filter: 'blur(1rem)',
+            // transform: 'scale(1.5)',
           },
         })),
         h('title-', {}, item.snippet.title),
       ])
-    ))
+    )),
+    spinner()
   ])
