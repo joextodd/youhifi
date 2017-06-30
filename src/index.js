@@ -5,6 +5,7 @@ smoothscroll.polyfill()
 
 import { Player } from './mixins/player'
 import { Search } from './mixins/search'
+import { Party } from './mixins/party'
 
 import playPage from './pages/play'
 
@@ -26,6 +27,7 @@ app({
     tracks: [],
     error: false,
     isFetching: true,
+    partyId: '',
     iOS: /iPad|iPhone|iPod/.test(navigator.userAgent) && !window.MSStream,
   },
   actions: {
@@ -45,11 +47,14 @@ app({
         document.title = d.title
         a.setTrack(d)
         a.addTrack(d)
+        a.saveState(s)
       })
       .catch(console.log)
     },
     setTrack: (s,a,d) => ({ id: d.id || s.id, track: d }),
     addTrack: (s,a,d) => ({ tracks: s.tracks.concat(d) }),
+    setParty: (s,a,d) => ({ isParty: true }),
+    setPartyId: (s,a,d) => ({ partyId: parseInt(new Date().getTime() / 1000).toString(26) }),
   },
   events: {
     route: (s,a,d) => {
@@ -70,12 +75,17 @@ app({
         a.setPlaying(!s.iOS)
         a.getVideo()
       }
+      if (d.match === '/party') {
+        a.setPartyId()
+      }
     },
   },
   view: [
     ['/', playPage],
     ['/:id', playPage],
+    ['/party', playPage],
+    ['/party/:pid/:id', playPage],
     ['*', lostPage],
   ],
-  mixins: [Router, Player, Search],
+  mixins: [Router, Player, Search, Party],
 })

@@ -8,6 +8,7 @@ import nested from "postcss-nested"
 export default {
   format: 'iife',
   sourceMap: false,
+  useStrict: false,
   moduleContext: {
     'node_modules/whatwg-fetch/fetch.js': 'window',
   },
@@ -19,7 +20,15 @@ export default {
     }),
     commonjs(),
     resolve({ jsnext: true }),
-    buble({ jsx: "h" }),
+    buble({
+      jsx: 'h',
+      exclude: ['node_modules/**'],
+    }),
     uglify(),
-  ]
+  ],
+  onwarn: function (message) {
+    if (/Use of `eval` \(in .*\/node_modules\/firebase\/.*\) is strongly discouraged/.test(message)) {
+      return
+    }
+  },
 }
