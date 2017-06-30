@@ -219,12 +219,16 @@ combined-page {
 
   search-page {
     position: relative;
-    margin-top: 100vh;
+    margin-top: 25vh;
     max-width: 25rem;
     margin-left: auto;
     margin-right: auto;
     padding: 1rem;
     margin-bottom: 1rem;
+  }
+
+  play-page + search-page {
+    margin-top: 100vh;
   }
 
   play-page {
