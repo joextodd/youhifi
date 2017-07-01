@@ -6,7 +6,8 @@ self.addEventListener('install', function(event) {
     .then(cache => cache.addAll([
       '/',
       '/index.js',
-      '/index.css'
+      '/index.css',
+      'https://img.youtube.com/*'
     ]))
   )
 })

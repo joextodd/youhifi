@@ -177,10 +177,6 @@ play-page {
     animation: blink 1s infinite;
   }
 
-  title- {
-    transition: opacity .5s;
-  }
-
   &.focus {
     img {
       filter: blur(1rem) brightness(0.7);
@@ -194,6 +190,7 @@ play-page {
   }
 
   title- {
+    transition: opacity .5s;
     position: relative;
     text-align: center;
     display: flex;
@@ -203,12 +200,12 @@ play-page {
     color: rgba(255, 255, 255, 0.5);
     text-align: center;
     text-transform: uppercase;
-    font-size: 1.5rem;
+    font-size: 1.38rem;
     font-weight: lighter;
-    letter-spacing: .1rem;
+    letter-spacing: .162rem;
     line-height: 162%;
     word-break: break-word;
-    max-width: 40ex;
+    max-width: 38ex;
   }
 
   controls- {
