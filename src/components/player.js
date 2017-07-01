@@ -20,6 +20,9 @@ const secondsToHHMMSS = seconds => {
 
 export default (s,a) =>
   h('play-page', {
+    style: {
+      paddingBottom: s.iOS && !navigator.userAgent.match('CriOS') && '100px',
+    },
     oncreate: e => {
       e._fn = ev => window.scrollY === 0
         ? e.classList.add('focus')
@@ -35,7 +38,9 @@ export default (s,a) =>
     s.player && s.player.duration && !s.isFetching
       ? h('time-', {}, `${secondsToHHMMSS(s.player.currentTime)} | ${secondsToHHMMSS(s.player.duration)}`)
       : !s.isFetching
-      ? s.iOS && s.player.paused ? h('loading-', {}, 'PRESS PLAY') : h('loading-', {}, 'LOADING')
+      ? s.iOS && s.player.paused
+      ? h('loading-', {}, 'PRESS PLAY')
+      : h('loading-', {}, 'LOADING')
       : '',
     // h('progress-', {},
     //   h('bar-', {

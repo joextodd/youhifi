@@ -173,7 +173,7 @@ play-page {
     }
   }
 
-  loading- {
+  &.focus loading- {
     animation: blink 1s infinite;
   }
 
