@@ -1,4 +1,5 @@
 import { h } from 'hyperapp'
+import throttle from 'throttle-debounce/throttle'
 import { spinner } from '../components/spinner'
 import { svg, img, button } from 'huy'
 
@@ -6,6 +7,16 @@ const url = 'https://youtube.joextodd.com'
 
 const ytThumb = id =>
   `https://img.youtube.com/vi/${id}/hqdefault.jpg`
+
+
+const secondsToHHMMSS = seconds => {
+  const h = parseInt(seconds / 3600, 10) % 24
+  const m = parseInt(seconds / 60, 10) % 60
+  const s = Math.floor(seconds % 60)
+  return h > 0 ?
+    `${h < 10 ? `0${h}` : h}:${m < 10 ? `0${m}` : m}:${s < 10 ? `0${s}` : s}` :
+    `${m < 10 ? `0${m}` : m}:${s < 10 ? `0${s}` : s}`
+}
 
 export default (s,a) =>
   h('play-page', {
@@ -21,6 +32,18 @@ export default (s,a) =>
   }, [
     img({ src: s.id && ytThumb(s.id) }),
     h('title-', {}, s.isFetching ? spinner() : s.track.title),
+    s.player && s.player.duration && !s.isFetching
+      ? h('time-', {}, `${secondsToHHMMSS(s.player.currentTime)} | ${secondsToHHMMSS(s.player.duration)}`)
+      : !s.isFetching
+      ? s.iOS && s.player.paused ? h('loading-', {}, 'PRESS PLAY') : h('loading-', {}, 'LOADING')
+      : '',
+    // h('progress-', {},
+    //   h('bar-', {
+    //     style : {
+    //       transform: `translateX(${s.player ? (s.currentTime / s.player.duration) * 100 : 0}%)`,
+    //     }
+    //   })
+    // ),
     s.player && h('controls-', {},[
       button({ onclick: a.prevVideo }, svg({ href: '#previous' })),
       button({ onclick: a.rewind, disabled: !!s.error }, svg({ href: '#rewind' })),
@@ -49,10 +72,12 @@ export default (s,a) =>
       oncanplay: _ => a.setError(false),
       oncreate: e => {
         e.onended = a.nextVideo
-        e.ontimeupdate = () => s.iOS &&
-          (s.player.currentTime > s.player.duration / 2)
+        e.ontimeupdate = throttle(1000, e => {
+          a.setCurrentTime(s.player.currentTime)
+          s.iOS && (s.player.currentTime > s.player.duration / 2)
           ? a.nextVideo()
           : null
+        })
         s.player = e
       },
     }),

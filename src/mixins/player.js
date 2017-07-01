@@ -2,8 +2,10 @@ export const Player = () => ({
   state: {
     player: null,
     playing: false,
+    currentTime: 0,
   },
   actions: {
+    setCurrentTime: (s,a,d) => ({ currentTime: d }),
     setPlaying: (s,a,d) => ({ playing: d }),
     pause: (s,a,d) => {
       s.player.pause()

@@ -79,6 +79,7 @@ search-page {
       height: 10rem;
       overflow: hidden;
       background: #000;
+      cursor: pointer;
       &:hover img {
         transform: scale(2.2);
       }
@@ -127,6 +128,18 @@ play-page {
   padding: 2rem;
   overflow: hidden;
 
+  progress- {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    bar- {
+      width: 100vw;
+      height: 1rem;
+      background: rgba(255,255,255, 0.025);
+    }
+  }
+
   img {
     position: fixed;
     width: 100%;
@@ -141,9 +154,27 @@ play-page {
 
   title-,
   controls-,
+  time-,
+  loading-,
   .search {
     opacity: 0;
     transition: opacity .4s;
+  }
+
+  time-,
+  loading- {
+    position: relative;
+    text-align: center;
+    color: rgba(255,255,255,.25);
+    letter-spacing: .1rem;
+    font-weight: lighter;
+    @media (max-height: 370px) {
+      display: none;
+    }
+  }
+
+  loading- {
+    animation: blink 1s infinite;
   }
 
   title- {
@@ -157,6 +188,8 @@ play-page {
     }
     title-,
     controls-,
+    time-,
+    loading-,
     .search { opacity: 1; }
   }
 
@@ -183,7 +216,10 @@ play-page {
     display: flex;
     justify-content: center;
     align-items: center;
-    margin: 1rem 0;
+    margin-top: 1rem;
+    @media (max-height: 370px) {
+      margin-top: 0;
+    }
     button {
       opacity: .5;
       &[disabled] { opacity: .25; }
@@ -204,20 +240,26 @@ play-page {
     opacity: .25;
   }
 
-  button.search {
-    position: relative;
-    font-size: .75rem;
-    color: rgba(255,255,255,.25);
-    text-transform: uppercase;
-    border: 1px solid rgba(255,255,255,.25);
-    padding: 1rem 2rem;
-    margin: 0 auto;
-    border-radius: 3rem;
-    &:hover {
-      color: rgba(255,255,255,.5);
-      border: 1px solid rgba(255,255,255,.5);
+    button.search {
+      position: relative;
+      font-size: .75rem;
+      color: rgba(255,255,255,.25);
+      text-transform: uppercase;
+      border: 1px solid rgba(255,255,255,.25);
+      padding: .5rem 2rem;
+      margin: 1rem auto 0;
+      border-radius: 3rem;
+      &:hover {
+        color: rgba(255,255,255,.5);
+        border: 1px solid rgba(255,255,255,.5);
+      }
+      @media (max-height: 480px) {
+        display: none;
+      }
     }
-  }
+
+
+
 }
 
 combined-page {
@@ -259,4 +301,10 @@ audio {
 
 svg#sheet {
   display: none;
+}
+
+@keyframes blink {
+  0% { opacity: 0 }
+  50% { opacity: 1 }
+  100% { opacity: 0 }
 }
