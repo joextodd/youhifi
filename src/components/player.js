@@ -71,6 +71,7 @@ export default (s,a) =>
     }, 'Search For Stream'),
     h('audio', {
       src: s.track.url && `${url}/proxy/${s.track.url}`,
+      title: s.track.title,
       crossorigin: 'anonymous',
       autoplay: !s.iOS ? 'yes' : '',
       onerror: _ => a.setError(true),
