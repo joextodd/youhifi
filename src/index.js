@@ -63,7 +63,7 @@ app({
           })
       }
       if (d.match === '/:id') {
-        s.iOS && a.setError(false)
+        a.setError(false)
         s.player && s.player.pause()
         a.setCurrentTime(0)
         a.setId(d.params.id)
