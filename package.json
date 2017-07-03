@@ -42,7 +42,8 @@
     "rollup-plugin-postcss": "^0.5.3"
   },
   "dependencies": {
-    "huy": "^1.0.0",
+    "fetch-jsonp": "^1.1.1",
+    "huy": "^1.1.0",
     "hyperapp": "^0.9.3",
     "smoothscroll-polyfill": "^0.3.5",
     "throttle-debounce": "^1.0.1",
