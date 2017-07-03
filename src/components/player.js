@@ -8,7 +8,6 @@ const url = 'https://youtube.joextodd.com'
 const ytThumb = id =>
   `https://img.youtube.com/vi/${id}/hqdefault.jpg`
 
-
 const secondsToHHMMSS = seconds => {
   const h = parseInt(seconds / 3600, 10) % 24
   const m = parseInt(seconds / 60, 10) % 60
@@ -36,11 +35,13 @@ export default (s,a) =>
     img({ src: s.id && ytThumb(s.id) }),
     h('title-', {}, s.isFetching ? spinner() : s.track.title),
     s.player && s.player.duration && !s.isFetching
-      ? h('time-', {}, `${secondsToHHMMSS(s.player.currentTime)} | ${secondsToHHMMSS(s.player.duration)}`)
-      : !s.isFetching
+      ? h('time-', {}, `${secondsToHHMMSS(s.player.currentTime)} | ${ s.iOS ? secondsToHHMMSS(s.player.duration/2) : secondsToHHMMSS(s.player.duration) }`)
+      : (!s.isFetching && !s.error)
       ? s.iOS && s.player.paused
-      ? h('loading-', {}, 'PRESS PLAY')
-      : h('loading-', {}, 'LOADING')
+        ? h('loading-', {}, 'PRESS PLAY')
+        : h('loading-', {}, 'LOADING')
+      : s.error ?
+      h('loading-', {}, 'ERROR')
       : '',
     // h('progress-', {},
     //   h('bar-', {
@@ -54,7 +55,10 @@ export default (s,a) =>
       button({ onclick: a.rewind, disabled: !!s.error }, svg({ href: '#rewind' })),
       button({ onclick: a.playPause, disabled: !!s.error },
         svg({
-          style: { width: '5rem', height: '5rem' },
+          style: {
+            width: '5rem', height: '5rem',
+            transform: s.error ? `scale(0.75)` : '',
+          },
           href: s.error ? '#error' : s.playing ? '#pause' : '#play',
         })
       ),
