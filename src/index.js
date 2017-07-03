@@ -9,8 +9,8 @@ import { Search } from './mixins/search'
 import playPage from './pages/play'
 
 import 'whatwg-fetch'
-import './index.scss'
-import './spinner.scss'
+import './index.css'
+import './spinner.css'
 
 const url = 'https://youtube.joextodd.com'
 
