@@ -7,7 +7,6 @@ self.addEventListener('install', function(event) {
       '/',
       '/index.js',
       '/index.css',
-      'https://img.youtube.com/*'
     ]))
   )
 })
