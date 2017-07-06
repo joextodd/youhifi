@@ -30,7 +30,9 @@ export const Search = () => ({
       .then(r => r.json())
       .then(d => {
         a.setNext(d)
-        a.router.go(`/${d.items[idx].id.videoId}`)
+        a.router.go(s.partyId ?
+          `/party/${s.partyId}/${d.items[idx].id.videoId}` :
+            `/${d.items[idx].id.videoId}`)
       })
       .catch(console.log)
     },

@@ -25,9 +25,9 @@ app({
     id: '',
     track: {},
     tracks: [],
+    partyId: '',
     error: false,
     isFetching: true,
-    partyId: '',
     iOS: /iPad|iPhone|iPod/.test(navigator.userAgent) && !window.MSStream,
   },
   actions: {
@@ -53,12 +53,11 @@ app({
     },
     setTrack: (s,a,d) => ({ id: d.id || s.id, track: d }),
     addTrack: (s,a,d) => ({ tracks: s.tracks.concat(d) }),
-    setParty: (s,a,d) => ({ isParty: true }),
-    setPartyId: (s,a,d) => ({ partyId: parseInt(new Date().getTime() / 1000).toString(26) }),
+    setPartyId: (s,a,d) => ({ partyId: d }),
   },
   events: {
     route: (s,a,d) => {
-      if (d.match === '/') {
+      if (d.match === '/' || d.match === '/party/:pid') {
         s.player && s.player.pause()
         s.id &&
           window.scroll({
@@ -67,7 +66,10 @@ app({
             behavior: 'smooth',
           })
       }
-      if (d.match === '/:id') {
+      if (d.match === '/party/:pid' || d.match === '/party/:pid/:id') {
+        a.setPartyId(d.params.pid)
+      }
+      if (d.match === '/:id' || d.match === '/party/:pid/:id') {
         a.setError(false)
         s.player && s.player.pause()
         a.setCurrentTime(0)
@@ -75,15 +77,12 @@ app({
         a.setPlaying(!s.iOS)
         a.getVideo()
       }
-      if (d.match === '/party') {
-        a.setPartyId()
-      }
     },
   },
   view: [
     ['/', playPage],
     ['/:id', playPage],
-    ['/party', playPage],
+    ['/party/:pid', playPage],
     ['/party/:pid/:id', playPage],
     ['*', lostPage],
   ],
