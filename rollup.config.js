@@ -1,7 +1,7 @@
 import buble from "rollup-plugin-buble"
 import commonjs from "rollup-plugin-commonjs"
 import resolve from "rollup-plugin-node-resolve"
-import uglify from "rollup-plugin-uglify"
+import uglify from "rollup-plugin-uglify-es"
 import postcss from "rollup-plugin-postcss"
 import nested from "postcss-nested"
 
