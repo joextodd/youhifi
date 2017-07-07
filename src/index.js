@@ -45,6 +45,7 @@ app({
       .then(d => {
         a.setFetching(false)
         document.title = d.title
+        a.setWebm(s.player.canPlayType('audio/webm') ? true : false)
         a.setTrack(d)
         a.addTrack(d)
         a.saveState(s)

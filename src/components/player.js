@@ -43,13 +43,6 @@ export default (s,a) =>
       : s.error ?
       h('loading-', {}, 'ERROR')
       : '',
-    // h('progress-', {},
-    //   h('bar-', {
-    //     style : {
-    //       transform: `translateX(${s.player ? (s.currentTime / s.player.duration) * 100 : 0}%)`,
-    //     }
-    //   })
-    // ),
     s.player && h('controls-', {},[
       button({ onclick: a.prevVideo }, svg({ href: '#previous' })),
       button({ onclick: a.rewind, disabled: !!s.error }, svg({ href: '#rewind' })),
@@ -74,7 +67,9 @@ export default (s,a) =>
       }),
     }, 'Search For Stream'),
     h('audio', {
-      src: s.track.url && `${url}/proxy/${s.track.url}`,
+      src: s.track.url && (s.webm ?
+        `${url}/proxy/${s.track.webm}` :
+        s.track.url && `${url}/proxy/${s.track.url}`),
       title: s.track.title,
       crossorigin: 'anonymous',
       autoplay: !s.iOS ? 'yes' : '',
