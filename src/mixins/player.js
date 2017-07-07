@@ -3,8 +3,10 @@ export const Player = () => ({
     player: null,
     playing: false,
     currentTime: 0,
+    webm: false,
   },
   actions: {
+    setWebm: (s,a,d) => ({ webm: d }),
     setCurrentTime: (s,a,d) => ({ currentTime: d }),
     setPlaying: (s,a,d) => ({ playing: d }),
     pause: (s,a,d) => {

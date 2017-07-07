@@ -1,7 +1,8 @@
 # AudioStream
-> A minimalist _progressive web app_ compliant template for hyperapp projects
 
-Once you have cloned or forked this project, use the following tasks from the project root:
+[![Build Status](https://travis-ci.org/joextodd/audiostream.svg?branch=master)](https://travis-ci.org/joextodd/audiostream)
+
+Low bandwidth audio streams.
 
 ```
 npm install     // Install all dependencies
@@ -10,7 +11,8 @@ npm start       // Build and watch files for changes
 
 This will build the application and serve it on http://localhost:8080
 
-## Features of this template
+
+## Code Features
 
 - Very minimal config files, developer and client side dependencies
 - Developer task that rebuilds app when source files change using [npm-watch](https://www.npmjs.com/package/npm-watch)
