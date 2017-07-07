@@ -1,7 +1,7 @@
 import buble from "rollup-plugin-buble"
 import commonjs from "rollup-plugin-commonjs"
 import resolve from "rollup-plugin-node-resolve"
-import uglify from "rollup-plugin-uglify-es"
+import uglify from "rollup-plugin-uglify"
 import postcss from "rollup-plugin-postcss"
 import nested from "postcss-nested"
 
@@ -20,10 +20,7 @@ export default {
     }),
     commonjs(),
     resolve({ jsnext: true }),
-    buble({
-      jsx: 'h',
-      exclude: ['node_modules/**'],
-    }),
+    buble({ jsx: 'h' }),
     uglify(),
   ],
   onwarn: function (message) {
