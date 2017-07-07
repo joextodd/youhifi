@@ -5,6 +5,7 @@ smoothscroll.polyfill()
 
 import { Player } from './mixins/player'
 import { Search } from './mixins/search'
+import { Party } from './mixins/party'
 
 import playPage from './pages/play'
 
@@ -24,6 +25,7 @@ app({
     id: '',
     track: {},
     tracks: [],
+    partyId: '',
     error: false,
     isFetching: true,
     iOS: /iPad|iPhone|iPod/.test(navigator.userAgent) && !window.MSStream,
@@ -45,15 +47,17 @@ app({
         document.title = d.title
         a.setTrack(d)
         a.addTrack(d)
+        a.saveState(s)
       })
       .catch(console.log)
     },
     setTrack: (s,a,d) => ({ id: d.id || s.id, track: d }),
     addTrack: (s,a,d) => ({ tracks: s.tracks.concat(d) }),
+    setPartyId: (s,a,d) => ({ partyId: d }),
   },
   events: {
     route: (s,a,d) => {
-      if (d.match === '/') {
+      if (d.match === '/' || d.match === '/party/:pid') {
         s.player && s.player.pause()
         s.id &&
           window.scroll({
@@ -62,7 +66,10 @@ app({
             behavior: 'smooth',
           })
       }
-      if (d.match === '/:id') {
+      if (d.match === '/party/:pid' || d.match === '/party/:pid/:id') {
+        a.setPartyId(d.params.pid)
+      }
+      if (d.match === '/:id' || d.match === '/party/:pid/:id') {
         a.setError(false)
         s.player && s.player.pause()
         a.setCurrentTime(0)
@@ -75,7 +82,9 @@ app({
   view: [
     ['/', playPage],
     ['/:id', playPage],
+    ['/party/:pid', playPage],
+    ['/party/:pid/:id', playPage],
     ['*', lostPage],
   ],
-  mixins: [Router, Player, Search],
+  mixins: [Router, Player, Search, Party],
 })
