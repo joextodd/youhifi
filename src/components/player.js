@@ -69,7 +69,7 @@ export default (s,a) =>
     h('audio', {
       src: s.track.url && (s.webm ?
         `${url}/proxy/${s.track.webm}` :
-        s.track.url && `${url}/proxy/${s.track.url}`),
+        `${url}/proxy/${s.track.url}`),
       title: s.track.title,
       crossorigin: 'anonymous',
       autoplay: !s.iOS ? 'yes' : '',
