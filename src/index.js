@@ -20,7 +20,6 @@ app({
   state: {
     id: '',
     track: {},
-    tracks: [],
     error: false,
     isFetching: true,
     iOS: /iPad|iPhone|iPod/.test(navigator.userAgent) && !window.MSStream,
@@ -46,8 +45,6 @@ app({
       })
       .catch(console.log)
     },
-    setTrack: (s,a,d) => ({ id: d.id || s.id, track: d }),
-    addTrack: (s,a,d) => ({ tracks: s.tracks.concat(d) }),
   },
   events: {
     route: (s,a,d) => {
