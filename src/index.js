@@ -8,17 +8,13 @@ import { Search } from './mixins/search'
 import { Party } from './mixins/party'
 
 import playPage from './pages/play'
+import lostPage from './pages/lost'
 
 import 'whatwg-fetch'
 import './index.css'
 import './spinner.css'
 
 const url = 'https://api.joextodd.com'
-
-const lostPage = (s,a) =>
-  h('h1', { onclick: e => a.router.go('/') },
-    `Back to ${location.hostname}`
-  )
 
 app({
   state: {
