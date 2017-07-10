@@ -1,3 +1,5 @@
+const between = (min,max) => z => Math.min(Math.max(z, min), max)
+
 export const Player = () => ({
   state: {
     player: null,
@@ -17,11 +19,10 @@ export const Player = () => ({
       s.player.paused ? s.player.play() : s.player.pause()
       return ({ playing: !s.player.paused })
     },
-    rewind: (s,a,d) => {
-      s.player.currentTime = Math.max(s.player.currentTime - 10, 0)
-    },
-    forwards: (s,a,d) => {
-      s.player.currentTime = Math.min(s.player.currentTime + 10, s.player.duration)
+    seekBy: ({player},a,d) => {
+      const time = between(0, player.duration)(player.currentTime + d)
+      player.currentTime = time
+      return ({ currentTime: time })
     },
   },
 })

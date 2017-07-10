@@ -42,7 +42,6 @@ app({
       fetch(`${url}/video/${s.id}`)
       .then(r => r.json())
       .then(d => {
-        console.log(d.title)
         a.setFetching(false)
         document.title = d.title
         a.setWebm(s.player.canPlayType('audio/webm') ? true : false)

@@ -45,7 +45,7 @@ export default (s,a) =>
       : '',
     s.player && h('controls-', {},[
       button({ onclick: a.prevVideo }, svg({ href: '#previous' })),
-      button({ onclick: a.rewind, disabled: !!s.error }, svg({ href: '#rewind' })),
+      button({ onclick: e => a.seekBy(-10), disabled: !!s.error }, svg({ href: '#rewind' })),
       button({ onclick: a.playPause, disabled: !!s.error },
         svg({
           style: {
@@ -55,7 +55,7 @@ export default (s,a) =>
           href: s.error ? '#error' : s.playing ? '#pause' : '#play',
         })
       ),
-      button({ onclick: a.forwards, disabled: !!s.error }, svg({ href: '#forwards' })),
+      button({ onclick: e => a.seekBy(10), disabled: !!s.error }, svg({ href: '#forwards' })),
       button({ onclick: a.nextVideo }, svg({ href: '#next' })),
     ]),
     button({
@@ -67,9 +67,7 @@ export default (s,a) =>
       }),
     }, 'Search For Stream'),
     h('audio', {
-      src: s.track.url && (s.webm && s.track.webm ?
-        `${url}/proxy/${s.track.webm}` :
-        `${url}/proxy/${s.track.url}`),
+      src: s.track.url && `${url}/proxy/${s.webm ? s.track.webm : s.track.url}`,
       title: s.track.title,
       crossorigin: 'anonymous',
       autoplay: !s.iOS ? 'yes' : '',
@@ -80,8 +78,8 @@ export default (s,a) =>
         e.ontimeupdate = throttle(1000, e => {
           a.setCurrentTime(s.player.currentTime)
           s.iOS && (s.player.currentTime > s.player.duration / 2)
-          ? a.nextVideo()
-          : null
+            ? a.nextVideo()
+            : null
         })
         s.player = e
       },
