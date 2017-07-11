@@ -1,8 +1,7 @@
 import { h } from 'hyperapp'
 import throttle from 'throttle-debounce/throttle'
-import { spinner } from '../components/spinner'
-import { iOS, iOS_chrome, scrollToSearch,
-         focusOnScrollTop, fix100vh } from '../helpers/window'
+import { $icon, $ytThumb, $spinner } from '../helpers/element'
+import { iOS, iOS_chrome, scrollToSearch, focusOnScrollTop, fix100vh } from '../helpers/window'
 
 const url = 'https://api.joextodd.com'
 
@@ -21,28 +20,18 @@ const secondsToHHMMSS = seconds => {
 const $title = c => h('title-', {}, c)
 const $loading = c => h('loading-', {}, c)
 const $audio = p => h('audio', p)
-const $svg = (p,c) => h("svg", p, c)
-const $img = p => h('img', p)
 const $button = (p,c) => h('button', p, c)
 
-const $icon = href => $svg({}, $use(href))
-
-const $use = href =>
-  h("use", { href,
-    oncreate: e =>
-      e.setAttributeNS("http://www.w3.org/1999/xlink", "href", href)
-  })
-
-const $progress = player =>
-  h('time-', {}, `${secondsToHHMMSS(player.currentTime)} | ${secondsToHHMMSS(iOS() ? player.duration/2 : player.duration)}`)
-
-const $ytThumb = id =>
-  $img({ src: `https://img.youtube.com/vi/${id}/hqdefault.jpg` })
+const $progress = player => {
+  const cur = secondsToHHMMSS(player.currentTime)
+  const dur = secondsToHHMMSS(iOS() ? player.duration/2 : player.duration)
+  return h('time-', {}, `${cur} | ${dur}`)
+}
 
 export default (s,a) =>
   h('play-page', Object.assign(fix100vh, focusOnScrollTop), [
     s.id && $ytThumb(s.id),
-    $title(s.isFetching ? spinner() : s.track.title),
+    $title(s.isFetching ? $spinner() : s.track.title),
     s.player && s.player.duration && !s.isFetching
       ? $progress(s.player)
       : (!s.isFetching && !s.error)
