@@ -2,6 +2,7 @@ import { h } from 'hyperapp'
 import throttle from 'throttle-debounce/throttle'
 import { spinner } from '../components/spinner'
 import { svg, img, button } from 'huy'
+import { iOS, iOS_chrome, scrollToSearch } from '../helpers/window'
 
 const url = 'https://api.joextodd.com'
 
@@ -17,27 +18,30 @@ const secondsToHHMMSS = seconds => {
     `${m < 10 ? `0${m}` : m}:${s < 10 ? `0${s}` : s}`
 }
 
+const focusOnScrollTop = {
+  oncreate: e => {
+    e._fn = ev => window.scrollY === 0
+      ? e.classList.add('focus')
+      : e.classList.remove('focus')
+    e._fn()
+    window.addEventListener('scroll', e._fn)
+  },
+  onremove: e =>
+    window.removeEventListener('scroll', e._fn),
+}
+
+const fix100vh = {
+  style: { paddingBottom: iOS() && !iOS_chrome() && '100px' }
+}
+
 export default (s,a) =>
-  h('play-page', {
-    style: {
-      paddingBottom: s.iOS && !navigator.userAgent.match('CriOS') && '100px',
-    },
-    oncreate: e => {
-      e._fn = ev => window.scrollY === 0
-        ? e.classList.add('focus')
-        : e.classList.remove('focus')
-      e._fn()
-      window.addEventListener('scroll', e._fn)
-    },
-    onremove: e =>
-      window.removeEventListener('scroll', e._fn)
-  }, [
+  h('play-page', Object.assign(fix100vh, focusOnScrollTop), [
     img({ src: s.id && ytThumb(s.id) }),
     h('title-', {}, s.isFetching ? spinner() : s.track.title),
     s.player && s.player.duration && !s.isFetching
-      ? h('time-', {}, `${secondsToHHMMSS(s.player.currentTime)} | ${ s.iOS ? secondsToHHMMSS(s.player.duration/2) : secondsToHHMMSS(s.player.duration) }`)
+      ? h('time-', {}, `${secondsToHHMMSS(s.player.currentTime)} | ${ iOS() ? secondsToHHMMSS(s.player.duration/2) : secondsToHHMMSS(s.player.duration) }`)
       : (!s.isFetching && !s.error)
-      ? s.iOS && s.player.paused
+      ? iOS() && s.player.paused
         ? h('loading-', {}, 'PRESS PLAY')
         : h('loading-', {}, 'LOADING')
       : s.error ?
@@ -60,24 +64,20 @@ export default (s,a) =>
     ]),
     button({
       class: 'search',
-      onclick: e => window.scroll({
-        top: window.innerHeight * .8,
-        left: 0,
-        behavior: 'smooth',
-      }),
+      onclick: scrollToSearch,
     }, 'Search For Stream'),
     h('audio', {
       src: s.track.url && `${url}/proxy/${s.webm ? s.track.webm : s.track.url}`,
       title: s.track.title,
       crossorigin: 'anonymous',
-      autoplay: !s.iOS ? 'yes' : '',
+      autoplay: !iOS() ? 'yes' : '',
       onerror: _ => a.setError(true),
       oncanplay: _ => a.setError(false),
       oncreate: e => {
         e.onended = a.nextVideo
         e.ontimeupdate = throttle(1000, e => {
           a.setCurrentTime(s.player.currentTime)
-          s.iOS && (s.player.currentTime > s.player.duration / 2)
+          iOS() && (s.player.currentTime > s.player.duration / 2)
             ? a.nextVideo()
             : null
         })

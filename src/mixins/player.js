@@ -12,8 +12,8 @@ export const Player = () => ({
     setCurrentTime: (s,a,d) => ({ currentTime: d }),
     setPlaying: (s,a,d) => ({ playing: d }),
     pause: (s,a,d) => {
-      s.player.pause()
-      return ({ playing: !s.player.paused })
+      s.player && s.player.pause()
+      return ({ playing: false })
     },
     playPause: (s,a,d) => {
       s.player.paused ? s.player.play() : s.player.pause()

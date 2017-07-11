@@ -10,6 +10,8 @@ import { Party } from './mixins/party'
 import playPage from './pages/play'
 import lostPage from './pages/lost'
 
+import { iOS, scrollToSearch } from './helpers/window'
+
 import 'whatwg-fetch'
 import './index.css'
 import './spinner.css'
@@ -22,16 +24,13 @@ app({
     track: {},
     error: false,
     isFetching: true,
-    iOS: /iPad|iPhone|iPod/.test(navigator.userAgent) && !window.MSStream,
   },
   actions: {
     setId: (s,a,d) => ({ id: d }),
     setError: (s,a,d) => ({ error: d }),
     setFetching: (s,a,d) => ({ isFetching: d }),
-    prevVideo: (s,a,d) => {
-      a.pause()
-      window.history.back()
-    },
+    setTrack: (s,a,d) => ({ id: d.id || s.id, track: d }),
+    prevVideo: (s,a,d) => window.history.back(),
     getVideo: (s,a,d) => {
       a.setFetching(true)
       fetch(`${url}/video/${s.id}`)
@@ -41,28 +40,21 @@ app({
         document.title = d.title
         a.setWebm(s.player.canPlayType('audio/webm') ? true : false)
         a.setTrack(d)
-        a.addTrack(d)
       })
       .catch(console.log)
     },
   },
   events: {
     route: (s,a,d) => {
-      if (d.match === '/' || d.match === '/party/:pid') {
-        s.player && s.player.pause()
-        s.id &&
-          window.scroll({
-            top: window.innerHeight * .8,
-            left: 0,
-            behavior: 'smooth',
-          })
+      a.pause()
+      if (d.match === '/') {
+        s.id && scrollToSearch()
       }
       if (d.match === '/:id') {
         a.setError(false)
-        s.player && s.player.pause()
         a.setCurrentTime(0)
         a.setId(d.params.id)
-        a.setPlaying(!s.iOS)
+        a.setPlaying(!iOS())
         a.getVideo()
       }
       if (d.match === '/party/:pid') {
