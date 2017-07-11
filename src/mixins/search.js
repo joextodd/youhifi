@@ -1,36 +1,19 @@
 const MAX_RESULTS = 10
-const YT_API = "https://www.googleapis.com/youtube/v3"
 const YT_API_KEY = "AIzaSyBKrJKFGTSo3YVPyavzo6ngIll3DYIuadQ"
 
+const YT_API_SEARCH = 'https://www.googleapis.com/youtube/v3/search?part=snippet'
+  + `&maxResults=${MAX_RESULTS}&key=${YT_API_KEY}&type=video&videoCategoryId=10`
+
 const fetchRelated = id =>
-  fetch(`${YT_API}/search` +
-    '?part=snippet' +
-    `&maxResults=${MAX_RESULTS}` +
-    '&videoCategoryId=10' +
-    '&type=video' +
-    `&relatedToVideoId=${id}` +
-    `&key=${YT_API_KEY}`)
+  fetch(`${YT_API_SEARCH}&relatedToVideoId=${id}`)
   .then(r => r.json())
 
 const fetchSearch = query =>
-  fetch(`${YT_API}/search` +
-    '?part=snippet' +
-    `&maxResults=${MAX_RESULTS}` +
-    '&type=video' +
-    '&videoCategoryId=10' +
-    `&q=${query}` +
-    `&key=${YT_API_KEY}`)
+  fetch(`${YT_API_SEARCH}&q=${query}`)
   .then(r => r.json())
 
 const fetchSearchNext = (query, token) =>
-  fetch(`${YT_API}/search` +
-    '?part=snippet' +
-    `&maxResults=${MAX_RESULTS}` +
-    '&type=video' +
-    '&videoCategoryId=10' +
-    `&q=${query}` +
-    `&pageToken=${token}` +
-    `&key=${YT_API_KEY}`)
+  fetch(`${YT_API_SEARCH}&q=${query}&pageToken=${token}`)
   .then(r => r.json())
 
 export const Search = () => ({
