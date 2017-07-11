@@ -224,6 +224,10 @@ play-page {
         opacity: .75;
         transform: scale(1.1);
       }
+      &:nth-child(3) svg {
+        width: 5rem;
+        height: 5rem;
+      }
       svg {
         fill: white;
         width: 2.5rem;
