@@ -1,21 +1,10 @@
 import { h } from 'hyperapp'
 import throttle from 'throttle-debounce/throttle'
 import { $icon, $ytThumb, $spinner } from '../helpers/element'
+import { secondsToHHMMSS } from '../helpers/youtube'
 import { iOS, iOS_chrome, scrollToSearch, focusOnScrollTop, fix100vh } from '../helpers/window'
 
-const url = 'https://api.joextodd.com'
-
-const ytThumb = id =>
-  `https://img.youtube.com/vi/${id}/hqdefault.jpg`
-
-const secondsToHHMMSS = seconds => {
-  const h = parseInt(seconds / 3600, 10) % 24
-  const m = parseInt(seconds / 60, 10) % 60
-  const s = Math.floor(seconds % 60)
-  return h > 0 ?
-    `${h < 10 ? `0${h}` : h}:${m < 10 ? `0${m}` : m}:${s < 10 ? `0${s}` : s}` :
-    `${m < 10 ? `0${m}` : m}:${s < 10 ? `0${s}` : s}`
-}
+const url = 'https://youtube.joextodd.com'
 
 const $title = c => h('title-', {}, c)
 const $loading = c => h('loading-', {}, c)
