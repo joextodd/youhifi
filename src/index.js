@@ -21,12 +21,10 @@ app({
   state: {
     id: '',
     track: {},
-    error: false,
     isFetching: true,
   },
   actions: {
     setId: (s,a,d) => ({ id: d }),
-    setError: (s,a,d) => ({ error: d }),
     setFetching: (s,a,d) => ({ isFetching: d }),
     setTrack: (s,a,d) => ({ id: d.id || s.id, track: d }),
     prevVideo: (s,a,d) => window.history.back(),
