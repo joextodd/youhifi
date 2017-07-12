@@ -1,4 +1,4 @@
-const between = (min,max) => z => Math.min(Math.max(z, min), max)
+const clamp = z => (min,max) => Math.min(Math.max(z, min), max)
 
 export const Player = () => ({
   state: {
@@ -20,7 +20,7 @@ export const Player = () => ({
       return ({ playing: !s.player.paused })
     },
     seekBy: ({player},a,d) => {
-      const time = between(0, player.duration)(player.currentTime + d)
+      const time = clamp(player.currentTime + d)(0, player.duration)
       player.currentTime = time
       return ({ currentTime: time })
     },

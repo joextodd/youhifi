@@ -25,13 +25,13 @@ export default (s,a) =>
     }, [
       input({
         placeholder: 'Search songs or artists..',
-        action: a.search,
+        action: e => a.search(e.target.value),
         debounce: 300,
       }),
       $icon('#search'),
     ]),
-    ul({ class: 'search-results', infinite: a.searchNext, },
-      s.search.map($searchItem(s,a))
+    ul({ class: 'search-results', infinite: a.fetchResults, },
+      s.searchResults.map($searchItem(s,a))
     ),
     $spinner()
   ])
