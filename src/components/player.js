@@ -29,7 +29,7 @@ const $progress = player => {
 }
 
 export default (s,a) =>
-  h('play-page', Object.assign(fix100vh, focusOnScrollTop), [
+  h('player-', Object.assign(fix100vh, focusOnScrollTop), [
     $ytThumb(s.id),
     $title(s.isFetching ? $spinner() : s.track.title),
     s.player && s.player.duration && !s.isFetching

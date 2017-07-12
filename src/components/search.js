@@ -18,7 +18,7 @@ const $searchItem = (s,a) => item =>
   ])
 
 export default (s,a) =>
-  h('search-page', {}, [
+  h('search-', {}, [
     $form({
       action: '#',
       onsubmit: e => e.preventDefault() || document.activeElement.blur()
