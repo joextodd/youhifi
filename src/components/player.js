@@ -11,9 +11,9 @@ const $loading = c => h('loading-', {}, c)
 const $audio = p => h('audio', p)
 const $button = (p,c) => h('button', p, c)
 
-const $progress = player => {
-  const cur = secondsToHHMMSS(player.currentTime)
-  const dur = secondsToHHMMSS(iOS() ? player.duration/2 : player.duration)
+const $progress = (time, total) => {
+  const cur = secondsToHHMMSS(time)
+  const dur = secondsToHHMMSS(iOS() ? total/2 : total)
   return h('time-', {}, `${cur} | ${dur}`)
 }
 
@@ -21,20 +21,20 @@ export default (s,a) =>
   h('player-', Object.assign(fix100vh, focusOnScrollTop), [
     $ytThumb(s.id),
     $title(s.isFetching ? $spinner() : s.track.title),
-    s.player && s.player.duration && !s.isFetching
-      ? $progress(s.player)
-      : (!s.isFetching && !s.error)
-        ? iOS() && s.player.paused
-          ? $loading('PRESS PLAY')
-          : $loading('LOADING')
-        : s.error
-          ? $loading('ERROR')
-          : '',
+    !s.isFetching && (s.error
+      ? $loading('ERROR')
+      : s.currentTime === 0
+        ? iOS() && s.player.paused ? $loading('PRESS PLAY') : $loading('LOADING')
+        : $progress(s.currentTime, s.player.duration)),
     s.player && h('controls-', {},[
       $button({ onclick: a.prevVideo }, $icon('#previous')),
       $button({ onclick: e => a.seekBy(-10), disabled: !!s.error }, $icon('#rewind')),
       $button({ onclick: a.playPause, disabled: !!s.error },
-        $icon(s.error ? '#error' : s.playing ? '#pause' : '#play')
+        s.error
+          ? $icon('#error')
+          : s.playing
+            ? $icon('#pause')
+            : $icon('#play')
       ),
       $button({ onclick: e => a.seekBy(10), disabled: !!s.error }, $icon('#forwards')),
       $button({ onclick: a.nextVideo }, $icon('#next')),

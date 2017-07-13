@@ -3,8 +3,9 @@ import { h } from 'hyperapp'
 const $svg = (p,c) => h("svg", p, c)
 
 const $use = href =>
-  h("use", { href,
-    oncreate: e =>
+  h("use", {
+    href,
+    onupdate: e =>
       e.setAttributeNS("http://www.w3.org/1999/xlink", "href", href)
   })
 

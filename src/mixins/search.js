@@ -20,7 +20,8 @@ export const Search = () => ({
       a.setSearchToken()
       a.fetchResults()
     },
-    fetchResults: (s,a,d) =>
+    fetchResults: (s,a,d) => {
+      (s.searchString.length || s.searchResults.length === 0) &&
       fetchSearchResults(s.searchString, s.searchToken)
       .then(({ items, nextPageToken }) => {
         a.setSearchResults(s.searchToken
@@ -28,6 +29,7 @@ export const Search = () => ({
           : items
         )
         a.setSearchToken(nextPageToken)
-      }).catch(console.log),
+      }).catch(console.log)
+    },
   },
 })
