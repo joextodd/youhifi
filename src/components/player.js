@@ -3,7 +3,7 @@ import throttle from 'throttle-debounce/throttle'
 import { spinner } from '../components/spinner'
 import { svg, img, button } from 'huy'
 
-const url = 'https://youtube.joextodd.com'
+const url = 'http://35.189.197.239:5000'
 
 const ytThumb = id =>
   `https://img.youtube.com/vi/${id}/hqdefault.jpg`
@@ -69,7 +69,7 @@ export default (s,a) =>
     h('audio', {
       src: s.track.url && (s.webm ?
         `${url}/proxy/${s.track.webm}` :
-        s.track.url && `${url}/proxy/${s.track.url}`),
+        `${url}/proxy/${s.track.url}`),
       title: s.track.title,
       crossorigin: 'anonymous',
       autoplay: !s.iOS ? 'yes' : '',

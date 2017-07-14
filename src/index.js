@@ -13,7 +13,7 @@ import 'whatwg-fetch'
 import './index.css'
 import './spinner.css'
 
-const url = 'https://youtube.joextodd.com'
+const url = 'http://35.189.197.239:5000'
 
 const lostPage = (s,a) =>
   h('h1', { onclick: e => a.router.go('/') },
@@ -25,7 +25,6 @@ app({
     id: '',
     track: {},
     tracks: [],
-    partyId: '',
     error: false,
     isFetching: true,
     iOS: /iPad|iPhone|iPod/.test(navigator.userAgent) && !window.MSStream,
@@ -43,18 +42,17 @@ app({
       fetch(`${url}/video/${s.id}`)
       .then(r => r.json())
       .then(d => {
+        console.log(d.title)
         a.setFetching(false)
         document.title = d.title
         a.setWebm(s.player.canPlayType('audio/webm') ? true : false)
         a.setTrack(d)
         a.addTrack(d)
-        a.saveState(s)
       })
       .catch(console.log)
     },
     setTrack: (s,a,d) => ({ id: d.id || s.id, track: d }),
     addTrack: (s,a,d) => ({ tracks: s.tracks.concat(d) }),
-    setPartyId: (s,a,d) => ({ partyId: d }),
   },
   events: {
     route: (s,a,d) => {
@@ -67,10 +65,7 @@ app({
             behavior: 'smooth',
           })
       }
-      if (d.match === '/party/:pid' || d.match === '/party/:pid/:id') {
-        a.setPartyId(d.params.pid)
-      }
-      if (d.match === '/:id' || d.match === '/party/:pid/:id') {
+      if (d.match === '/:id') {
         a.setError(false)
         s.player && s.player.pause()
         a.setCurrentTime(0)
@@ -78,13 +73,16 @@ app({
         a.setPlaying(!s.iOS)
         a.getVideo()
       }
+      if (d.match === '/party/:pid') {
+        a.setPartyId(d.params.pid)
+        a.getPartyQ()
+      }
     },
   },
   view: [
     ['/', playPage],
     ['/:id', playPage],
     ['/party/:pid', playPage],
-    ['/party/:pid/:id', playPage],
     ['*', lostPage],
   ],
   mixins: [Router, Player, Search, Party],
