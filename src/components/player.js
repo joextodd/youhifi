@@ -3,7 +3,7 @@ import throttle from 'throttle-debounce/throttle'
 import { spinner } from '../components/spinner'
 import { svg, img, button } from 'huy'
 
-const url = 'http://35.189.197.239:5000'
+const url = 'https://youtube.joextodd.com'
 
 const ytThumb = id =>
   `https://img.youtube.com/vi/${id}/hqdefault.jpg`

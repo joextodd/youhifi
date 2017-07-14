@@ -13,7 +13,7 @@ import 'whatwg-fetch'
 import './index.css'
 import './spinner.css'
 
-const url = 'http://35.189.197.239:5000'
+const url = 'https://youtube.joextodd.com'
 
 const lostPage = (s,a) =>
   h('h1', { onclick: e => a.router.go('/') },
