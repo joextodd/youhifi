@@ -26,9 +26,8 @@ export default (s,a) =>
       h('a', {
         onclick: e =>
           e.preventDefault()
-          || a.router.go(s.partyId ?
-            `/party/${s.partyId}/${item.id.videoId}` :
-              `/${item.id.videoId}`)
+          || a.savePartyState(item.id.videoId)
+          || (!s.partyId && a.router.go(`/${item.id.videoId}`))
           || window.scrollTo(0,0)
       },[
         img({ src: ytThumb(item.id.videoId) }),

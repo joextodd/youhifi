@@ -19,22 +19,25 @@ export const Search = () => ({
     setNext: (s,a,d) => ({ next: d.items }),
     nextVideo: (s,a,d) => {
       a.pause()
-      const idx = parseInt(Math.random() * (s.results - 1))
-      fetch(`${s.url}/search` +
-            '?part=snippet' +
-            `&maxResults=${s.results}` +
-            `&relatedToVideoId=${s.id}` +
-            '&videoCategoryId=10' +
-            '&type=video' +
-            `&key=${s.key}`)
-      .then(r => r.json())
-      .then(d => {
-        a.setNext(d)
-        a.router.go(s.partyId ?
-          `/party/${s.partyId}/${d.items[idx].id.videoId}` :
-            `/${d.items[idx].id.videoId}`)
-      })
-      .catch(console.log)
+      if (!s.partyId || (s.partyId && s.partyQ.length <= 1)) {
+        const idx = parseInt(Math.random() * (s.results - 1))
+        fetch(`${s.url}/search` +
+              '?part=snippet' +
+              `&maxResults=${s.results}` +
+              `&relatedToVideoId=${s.id}` +
+              '&videoCategoryId=10' +
+              '&type=video' +
+              `&key=${s.key}`)
+        .then(r => r.json())
+        .then(d => {
+          a.setNext(d)
+          s.partyId ?
+            a.savePartyState(d.items[idx].id.videoId) :
+              a.router.go(`/${d.items[idx].id.videoId}`)
+        })
+        .catch(console.log)
+      }
+      s.partyId && a.nextQTrack()
     },
     search: (s,a,d) => {
       a.setSearchString(d.target ? d.target.value : d)
