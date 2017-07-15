@@ -1,7 +1,7 @@
 export const Search = () => ({
   state: {
     url: 'https://www.googleapis.com/youtube/v3',
-    key: 'AIzaSyBKrJKFGTSo3YVPyavzo6ngIll3DYIuadQ',
+    key: 'AIzaSyBudPwcEKAS7KEyMnyDOPuHUv5pd3vSZ-U',
     results: 5,
     searchString: '',
     searchToken: '',
