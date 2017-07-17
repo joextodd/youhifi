@@ -67,7 +67,7 @@ export default (s,a) =>
       }),
     }, 'Search For Stream'),
     h('audio', {
-      src: s.track.url && (s.webm ?
+      src: s.track.url && (s.webm && s.track.webm ?
         `${url}/proxy/${s.track.webm}` :
         `${url}/proxy/${s.track.url}`),
       title: s.track.title,
