@@ -13,7 +13,7 @@ import 'whatwg-fetch'
 import './index.css'
 import './spinner.css'
 
-const url = 'https://audiostream-d2fbc.appspot.com'
+const url = 'https://api.joextodd.com'
 
 const lostPage = (s,a) =>
   h('h1', { onclick: e => a.router.go('/') },

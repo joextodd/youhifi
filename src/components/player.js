@@ -3,7 +3,7 @@ import throttle from 'throttle-debounce/throttle'
 import { spinner } from '../components/spinner'
 import { svg, img, button } from 'huy'
 
-const url = 'https://audiostream-d2fbc.appspot.com'
+const url = 'https://api.joextodd.com'
 
 const ytThumb = id =>
   `https://img.youtube.com/vi/${id}/hqdefault.jpg`
