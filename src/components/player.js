@@ -4,7 +4,7 @@ import { $icon, $ytThumb, $spinner } from '../helpers/element'
 import { secondsToHHMMSS } from '../helpers/youtube'
 import { iOS, iOS_chrome, scrollToSearch, focusOnScrollTop, fix100vh } from '../helpers/window'
 
-const url = 'https://youtube.joextodd.com'
+const url = 'https://api.joextodd.com'
 
 const $title = c => h('title-', {}, c)
 const $loading = c => h('loading-', {}, c)
