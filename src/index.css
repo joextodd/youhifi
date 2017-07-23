@@ -220,6 +220,28 @@ player- {
     button {
       opacity: .5;
       &[disabled] { opacity: .25; }
+
+      &.error {
+        svg:nth-child(2),
+        svg:nth-child(3) {
+          display: none;
+        }
+      }
+
+      &.pause {
+        svg:nth-child(1),
+        svg:nth-child(3) {
+          display: none;
+        }
+      }
+
+      &.play {
+        svg:nth-child(1),
+        svg:nth-child(2) {
+          display: none;
+        }
+      }
+
       &:not([disabled]):hover {
         opacity: .75;
         transform: scale(1.1);

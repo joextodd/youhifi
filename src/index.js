@@ -32,29 +32,32 @@ app({
       a.setFetching(true)
       a.setTrack({ id: s.track.id })
       fetchRelated(s.track.id)
-      .then(data => data.items[parseInt(Math.random() * data.items.length)].id.videoId)
-      .then(id => a.router.go(`/${id}`))
-      .catch(console.log)
+        .then(data => data.items[parseInt(Math.random() * data.items.length)].id.videoId)
+        .then(id => a.router.go(`/${id}`))
+        .catch(console.log)
     },
+    getVideo: (s,a,id) => {
+      a.setError(false)
+      a.setFetching(true)
+      a.setTrack({ id })
+      a.setPlaying(!iOS())
+      fetch(`${url}/video/${id}`)
+        .then(r => r.json())
+        .then(track => {
+          document.title = track.title
+          a.setTrack(track)
+          a.setFetching(false)
+        })
+        .catch(console.log)
+    }
   },
   events: {
     route: (s,a,d) => {
       if (d.match === '/') {
-        s.id && scrollToSearch()
+        s.track.id && scrollToSearch()
       }
       if (d.match === '/:id') {
-        a.setError(false)
-        a.setFetching(true)
-        a.setTrack({ id: d.params.id })
-        a.setPlaying(!iOS())
-        fetch(`${url}/video/${d.params.id}`)
-          .then(r => r.json())
-          .then(track => {
-            document.title = track.title
-            a.setTrack(Object.assign({ id: d.params.id }, track))
-            a.setFetching(false)
-          })
-          .catch(console.log)
+        a.getVideo(d.params.id)
       }
       if (d.match === '/party/:pid') {
         a.setPartyId(d.params.pid)

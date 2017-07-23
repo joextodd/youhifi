@@ -5,7 +5,7 @@ const $svg = (p,c) => h("svg", p, c)
 const $use = href =>
   h("use", {
     href,
-    onupdate: e =>
+    oncreate: e =>
       e.setAttributeNS("http://www.w3.org/1999/xlink", "href", href)
   })
 

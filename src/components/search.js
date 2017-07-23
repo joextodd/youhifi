@@ -26,6 +26,10 @@ export default (s,a) =>
       input({
         placeholder: 'Search songs or artists..',
         action: e => a.search(e.target.value),
+        autocomplete: 'off',
+        autocorrect: 'off',
+        autocapitalize: 'off',
+        spellcheck: 'false',
         debounce: 300,
       }),
       $icon('#search'),

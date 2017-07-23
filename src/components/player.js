@@ -19,7 +19,7 @@ const $progress = (time, total) => {
 
 export default (s,a) =>
   h('player-', Object.assign(fix100vh, focusOnScrollTop), [
-    s.track.id && $ytThumb(s.track.id),
+    $ytThumb(s.track.id),
     $title(s.isFetching ? $spinner() : s.track.title),
     !s.isFetching && (s.error
       ? $loading('ERROR')
@@ -29,16 +29,15 @@ export default (s,a) =>
     h('controls-', {},[
       $button({ onclick: a.prevVideo, disabled: !!s.isFetching }, $icon('#previous')),
       $button({ onclick: e => a.seekBy(-10), disabled: !!s.error }, $icon('#rewind')),
-      $button({ onclick: a.playPause, disabled: !!s.error }, s.error
-        ? $icon('#error')
-        : s.playing ? $icon('#pause') : $icon('#play')
-      ),
+      $button({ onclick: a.playPause, disabled: !!s.error,
+        class: s.error ? 'error' : s.playing ? 'pause' : 'play',
+      }, [$icon('#error'), $icon('#pause'), $icon('#play')]),
       $button({ onclick: e => a.seekBy(10), disabled: !!s.error }, $icon('#forwards')),
       $button({ onclick: a.nextVideo, disabled: !!s.isFetching }, $icon('#next')),
     ]),
     $button({ class: 'search', onclick: scrollToSearch }, 'Search For Stream'),
     $audio({
-      src: s.track.url ? `${url}/proxy/${s.webm && s.track.webm ? s.track.webm : s.track.url}` : '',
+      src: s.track.url ? `${url}/proxy/${(s.webm && s.track.webm) || s.track.url}` : '',
       title: s.track.title,
       crossorigin: 'anonymous',
       autoplay: !iOS() && 'yes',
@@ -51,9 +50,7 @@ export default (s,a) =>
       },
       ontimeupdate: throttle(1000, e => {
         a.setCurrentTime(s.player.currentTime)
-        iOS() && (s.player.currentTime > s.player.duration / 2)
-          ? a.nextVideo()
-          : null
+        iOS() && (s.player.currentTime > s.player.duration / 2) && a.nextVideo()
       }),
     }),
   ])

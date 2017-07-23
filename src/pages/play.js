@@ -5,6 +5,6 @@ import Player from '../components/player'
 
 export default (s,a) =>
   h('combined-page', {}, [
-    Player(s,a),
+    s.track.id && Player(s,a),
     Search(s,a),
   ])
