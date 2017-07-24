@@ -149,7 +149,7 @@ player- {
     object-fit: cover;
     filter: blur(1rem) brightness(0.3);
     transform: scale(2);
-    transition: filter 1s, --webkit-filter 1s, transform 4s ease-out;
+    transition: filter 1s, transform 4s ease-out;
   }
 
   title-,
@@ -265,6 +265,7 @@ player- {
 
   button.search {
     position: relative;
+    width: 15rem;
     font-size: .75rem;
     color: rgba(255,255,255,.25);
     text-transform: uppercase;

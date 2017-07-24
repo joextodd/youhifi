@@ -4,6 +4,7 @@ import resolve from "rollup-plugin-node-resolve"
 import uglify from "rollup-plugin-uglify"
 import postcss from "rollup-plugin-postcss"
 import nested from "postcss-nested"
+import autoprefix from "autoprefixer"
 
 export default {
   format: 'iife',
@@ -16,7 +17,10 @@ export default {
     postcss({
       sourceMap: 'inline',
       extract : true,
-      plugins: [ nested() ],
+      plugins: [
+        nested(),
+        autoprefix({ browsers: 'last 2 versions' }),
+      ],
     }),
     commonjs(),
     resolve({ jsnext: true }),

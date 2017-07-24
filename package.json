@@ -30,6 +30,7 @@
     "start": "npm-watch"
   },
   "devDependencies": {
+    "autoprefixer": "^7.1.2",
     "http-server-spa": "^1.2.0",
     "ncp": "^2.0.0",
     "npm-watch": "^0.1.9",
@@ -42,7 +43,6 @@
     "rollup-plugin-uglify": "^2.0.1"
   },
   "dependencies": {
-    "fetch-jsonp": "^1.1.1",
     "firebase": "3.5.2",
     "huy": "^1.1.0",
     "hyperapp": "^0.9.3",
