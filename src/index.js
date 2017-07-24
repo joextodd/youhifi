@@ -53,12 +53,8 @@ app({
   },
   events: {
     route: (s,a,d) => {
-      if (d.match === '/') {
-        s.track.id && scrollToSearch()
-      }
-      if (d.match === '/:id') {
-        a.getVideo(d.params.id)
-      }
+      if (d.match === '/') s.track.id && scrollToSearch()
+      if (d.match === '/:id') a.getVideo(d.params.id)
       if (d.match === '/party/:pid') {
         a.setPartyId(d.params.pid)
         a.getPartyQ()
