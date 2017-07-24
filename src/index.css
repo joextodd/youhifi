@@ -36,7 +36,7 @@ button {
   touch-action: manipulation;
 }
 
-search-page {
+search- {
   form {
     display: flex;
     align-items: center;
@@ -119,7 +119,7 @@ search-page {
   }
 }
 
-play-page {
+player- {
   position: relative;
   display: flex;
   flex-direction: column;
@@ -149,7 +149,7 @@ play-page {
     object-fit: cover;
     filter: blur(1rem) brightness(0.3);
     transform: scale(2);
-    transition: filter 1s, --webkit-filter 1s, transform 4s ease-out;
+    transition: filter 1s, transform 4s ease-out;
   }
 
   title-,
@@ -220,9 +220,35 @@ play-page {
     button {
       opacity: .5;
       &[disabled] { opacity: .25; }
+
+      &.error {
+        svg:nth-child(2),
+        svg:nth-child(3) {
+          display: none;
+        }
+      }
+
+      &.pause {
+        svg:nth-child(1),
+        svg:nth-child(3) {
+          display: none;
+        }
+      }
+
+      &.play {
+        svg:nth-child(1),
+        svg:nth-child(2) {
+          display: none;
+        }
+      }
+
       &:not([disabled]):hover {
         opacity: .75;
         transform: scale(1.1);
+      }
+      &:nth-child(3) svg {
+        width: 5rem;
+        height: 5rem;
       }
       svg {
         fill: white;
@@ -237,33 +263,31 @@ play-page {
     opacity: .25;
   }
 
-    button.search {
-      position: relative;
-      font-size: .75rem;
-      color: rgba(255,255,255,.25);
-      text-transform: uppercase;
-      border: 1px solid rgba(255,255,255,.25);
-      padding: .5rem 2rem;
-      margin: 1rem auto 0;
-      border-radius: 3rem;
-      &:hover {
-        color: rgba(255,255,255,.5);
-        border: 1px solid rgba(255,255,255,.5);
-      }
-      @media (max-height: 480px) {
-        display: none;
-      }
+  button.search {
+    position: relative;
+    width: 15rem;
+    font-size: .75rem;
+    color: rgba(255,255,255,.25);
+    text-transform: uppercase;
+    border: 1px solid rgba(255,255,255,.25);
+    padding: .5rem 2rem;
+    margin: 1rem auto 0;
+    border-radius: 3rem;
+    &:hover {
+      color: rgba(255,255,255,.5);
+      border: 1px solid rgba(255,255,255,.5);
     }
-
-
-
+    @media (max-height: 480px) {
+      display: none;
+    }
+  }
 }
 
 combined-page {
   position: relative;
   width: 100%;
 
-  search-page {
+  search- {
     position: relative;
     margin-top: 25vh;
     max-width: 25rem;
@@ -273,11 +297,11 @@ combined-page {
     margin-bottom: 1rem;
   }
 
-  play-page + search-page {
+  player- + search- {
     margin-top: 100vh;
   }
 
-  play-page {
+  player- {
     position: fixed;
     top: 0;
     left: 0;

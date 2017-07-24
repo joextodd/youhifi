@@ -15,20 +15,19 @@ export const Party = () => ({
         })
     },
     updateQ: (s,a,d) => {
-      if (s.id !== d[0]) {
-        a.setId(d[0])
+      if (s.track.id !== d[0]) {
         a.setPartyQ(d)
-        a.getVideo()
+        a.getVideo(d[0])
       }
     },
     savePartyState: (s,a,d) => {
       s.partyId &&
-        database.child(s.partyId).set({ ids: s.partyQ.push(d) && s.partyQ })
+        database.child(s.partyId).set({ ids: s.partyQ.concat(d) && s.partyQ })
     },
     nextQTrack: (s,a,d) => {
       s.partyId &&
         database.child(s.partyId).set({
-          ids: s.id === s.partyQ[0] ?
+          ids: s.track.id === s.partyQ[0] ?
             s.partyQ.splice(0, 1) && s.partyQ :
               s.partyQ
         })

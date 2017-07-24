@@ -1,38 +1,41 @@
 import { h } from 'hyperapp'
-import { spinner } from '../components/spinner'
-import { link, img, input, ul, svg } from 'huy'
+import { link, input, ul } from 'huy'
+import { $icon, $ytThumb, $spinner } from '../helpers/element'
 
-const ytThumb = id =>
-  `https://img.youtube.com/vi/${id}/hqdefault.jpg`
+const $title = c => h('title-', {}, c)
+const $form = (p,c) => h('form', p, c)
+
+const $searchItem = (s,a) => item =>
+  h('a', {
+    href: `/${item.id.videoId}`,
+    onclick: e => e.preventDefault()
+      || a.savePartyState(item.id.videoId)
+      || (!s.partyId && a.router.go(`/${item.id.videoId}`))
+      || window.scrollTo(0,0)
+  },[
+    $ytThumb(item.id.videoId),
+    $title(item.snippet.title),
+  ])
 
 export default (s,a) =>
-  h('search-page', {}, [
-    h('form', {
+  h('search-', {}, [
+    $form({
       action: '#',
       onsubmit: e => e.preventDefault() || document.activeElement.blur()
     }, [
       input({
         placeholder: 'Search songs or artists..',
-        action: a.search,
-        debounce: 500,
+        action: e => a.search(e.target.value),
+        autocomplete: 'off',
+        autocorrect: 'off',
+        autocapitalize: 'off',
+        spellcheck: 'false',
+        debounce: 300,
       }),
-      svg({ href: '#search' }),
+      $icon('#search'),
     ]),
-    ul({
-      class: 'search-results',
-      infinite: a.searchNext,
-    },
-    s.search.map(item =>
-      h('a', {
-        onclick: e =>
-          e.preventDefault()
-          || a.savePartyState(item.id.videoId)
-          || (!s.partyId && a.router.go(`/${item.id.videoId}`))
-          || window.scrollTo(0,0)
-      },[
-        img({ src: ytThumb(item.id.videoId) }),
-        h('title-', {}, item.snippet.title),
-      ])
-    )),
-    spinner()
+    ul({ class: 'search-results', infinite: a.fetchResults, },
+      s.searchResults.map($searchItem(s,a))
+    ),
+    (s.searchString !== '' && $spinner())
   ])

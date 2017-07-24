@@ -1,78 +1,60 @@
 import { h, app, Router } from 'hyperapp'
 import smoothscroll from 'smoothscroll-polyfill'
 
-smoothscroll.polyfill()
-
 import { Player } from './mixins/player'
 import { Search } from './mixins/search'
 import { Party } from './mixins/party'
 
 import playPage from './pages/play'
+import lostPage from './pages/lost'
+
+import { iOS, scrollToSearch } from './helpers/window'
+import { fetchRelated } from './helpers/youtube'
 
 import 'whatwg-fetch'
 import './index.css'
 import './spinner.css'
 
-const url = 'https://api.joextodd.com'
+smoothscroll.polyfill()
 
-const lostPage = (s,a) =>
-  h('h1', { onclick: e => a.router.go('/') },
-    `Back to ${location.hostname}`
-  )
+const url = 'https://api.joextodd.com'
 
 app({
   state: {
-    id: '',
     track: {},
-    tracks: [],
-    error: false,
     isFetching: true,
-    iOS: /iPad|iPhone|iPod/.test(navigator.userAgent) && !window.MSStream,
   },
   actions: {
-    setId: (s,a,d) => ({ id: d }),
-    setError: (s,a,d) => ({ error: d }),
     setFetching: (s,a,d) => ({ isFetching: d }),
-    prevVideo: (s,a,d) => {
-      a.pause()
-      window.history.back()
-    },
-    getVideo: (s,a,d) => {
+    setTrack: (s,a,d) => ({ track: d }),
+    prevVideo: (s,a,d) => window.history.back(),
+    nextVideo: (s,a,d) => {
       a.setFetching(true)
-      fetch(`${url}/video/${s.id}`)
-      .then(r => r.json())
-      .then(d => {
-        console.log(d.title)
-        a.setFetching(false)
-        document.title = d.title
-        a.setWebm(s.player.canPlayType('audio/webm') ? true : false)
-        a.setTrack(d)
-        a.addTrack(d)
-      })
-      .catch(console.log)
+      a.setTrack({ id: s.track.id })
+      fetchRelated(s.track.id)
+        .then(data => data.items[parseInt(Math.random() * data.items.length)].id.videoId)
+        .then(id => a.router.go(`/${id}`))
+        .catch(console.log)
     },
-    setTrack: (s,a,d) => ({ id: d.id || s.id, track: d }),
-    addTrack: (s,a,d) => ({ tracks: s.tracks.concat(d) }),
+    getVideo: (s,a,id) => {
+      a.setError(false)
+      a.setFetching(true)
+      a.setTrack({ id })
+      a.setPlaying(!iOS())
+      fetch(`${url}/video/${id}`)
+        .then(r => r.json())
+        .then(track => {
+          document.title = track.title
+          a.setTrack(track)
+          a.setFetching(false)
+        })
+        .catch(console.log)
+    }
   },
   events: {
     route: (s,a,d) => {
-      if (d.match === '/' || d.match === '/party/:pid') {
-        s.player && s.player.pause()
-        s.id &&
-          window.scroll({
-            top: window.innerHeight * .8,
-            left: 0,
-            behavior: 'smooth',
-          })
-      }
-      if (d.match === '/:id') {
-        a.setError(false)
-        s.player && s.player.pause()
-        a.setCurrentTime(0)
-        a.setId(d.params.id)
-        a.setPlaying(!s.iOS)
-        a.getVideo()
-      }
+      if (d.match === '/') s.track.id && scrollToSearch()
+      if (d.match === '/:id') a.getVideo(d.params.id)
       if (d.match === '/party/:pid') {
         a.setPartyId(d.params.pid)
         a.getPartyQ()
