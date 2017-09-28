@@ -14,6 +14,15 @@ import { fetchRelated } from './helpers/youtube'
 import 'whatwg-fetch'
 import './index.css'
 import './spinner.css'
+import './popup.css'
+
+// Check for any github-pages 404 redirect
+history.replaceState(null, null, sessionStorage.redirect)
+delete sessionStorage.redirect
+
+// Register service worker if not on localhost
+const local = window.location.host.startsWith('localhost')
+if ('serviceWorker' in navigator && !local) navigator.serviceWorker.register('/sw.js')
 
 smoothscroll.polyfill()
 
@@ -29,12 +38,16 @@ app({
     setTrack: (s,a,d) => ({ track: d }),
     prevVideo: (s,a,d) => window.history.back(),
     nextVideo: (s,a,d) => {
-      a.setFetching(true)
-      a.setTrack({ id: s.track.id })
-      fetchRelated(s.track.id)
-        .then(data => data.items[parseInt(Math.random() * data.items.length)].id.videoId)
-        .then(id => a.router.go(`/${id}`))
-        .catch(console.log)
+      if (s.partyId) {
+        a.nextQTrack()
+      } else {
+        a.setFetching(true)
+        a.setTrack({ id: s.track.id })
+        fetchRelated(s.track.id)
+          .then(data => data.items[parseInt(Math.random() * data.items.length)].id.videoId)
+          .then(id => a.router.go(`/${id}`))
+          .catch(console.log)
+      }
     },
     getVideo: (s,a,id) => {
       a.setError(false)
