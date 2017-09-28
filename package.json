@@ -6,44 +6,26 @@
   "license": "MIT",
   "main": "src/index.js",
   "output": "dist",
-  "watch": {
-    "static": {
-      "patterns": "static",
-      "extensions": "*",
-      "quiet": true
-    },
-    "bundle": {
-      "patterns": "src",
-      "extensions": "*.{scss,js}",
-      "quiet": true
-    },
-    "server": {
-      "patterns": "package.json",
-      "quiet": true
-    }
-  },
   "scripts": {
-    "static": "ncp static dist",
-    "bundle": "rollup -c -i src/index.js -o dist/index.js",
-    "server": "http-server-spa dist",
-    "build": "npm run static && npm run bundle",
-    "start": "npm-watch"
+    "build": "rollup -c",
+    "start": "rollup -c -w"
   },
   "devDependencies": {
     "autoprefixer": "^7.1.2",
-    "http-server-spa": "^1.2.0",
-    "ncp": "^2.0.0",
-    "npm-watch": "^0.1.9",
-    "postcss-nested": "^2.0.2",
-    "rollup": "^0.43.0",
+    "postcss-nested": "^2.1.2",
+    "rollup": "^0.49.2",
     "rollup-plugin-buble": "^0.15.0",
-    "rollup-plugin-commonjs": "^8.0.2",
-    "rollup-plugin-node-resolve": "^2.0.0",
-    "rollup-plugin-postcss": "^0.5.3",
+    "rollup-plugin-commonjs": "^8.2.0",
+    "rollup-plugin-livereload": "^0.6.0",
+    "rollup-plugin-node-resolve": "^3.0.0",
+    "rollup-plugin-postcss": "^0.5.4",
+    "rollup-plugin-serve": "^0.4.2",
     "rollup-plugin-uglify": "^2.0.1"
   },
   "dependencies": {
-    "firebase": "3.5.2",
+    "@hyperapp/html": "^0.2.0",
+    "actuatejs": "^1.0.1",
+    "animate.css": "^3.5.2",
     "huy": "^1.1.0",
     "hyperapp": "^0.9.3",
     "smoothscroll-polyfill": "^0.3.5",

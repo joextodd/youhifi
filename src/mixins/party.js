@@ -1,9 +1,10 @@
-import { database } from '../helpers/firebase'
+const database = firebase.database().ref('parties')
 
 export const Party = () => ({
   state: {
     partyQ: [],
     partyId: '',
+    popupVisible: false,
   },
   actions: {
     setPartyId: (s,a,d) => ({ partyId: d }),
@@ -14,15 +15,16 @@ export const Party = () => ({
           data.val() && data.val().ids && a.updateQ(data.val().ids)
         })
     },
-    updateQ: (s,a,d) => {
-      if (s.track.id !== d[0]) {
-        a.setPartyQ(d)
-        a.getVideo(d[0])
-      }
+    updateQ: (s,a,q) => {
+      a.setPartyQ(q)
+      s.track.id !== q[0] && a.getVideo(q[0])
     },
+    setPopupVisible: (s,a,d) => ({ popupVisible: d }),
     savePartyState: (s,a,d) => {
-      s.partyId &&
-        database.child(s.partyId).set({ ids: s.partyQ.concat(d) && s.partyQ })
+      if (s.partyId) {
+        a.setPopupVisible(true)
+        database.child(s.partyId).set({ ids: s.partyQ.concat(d) })
+      }
     },
     nextQTrack: (s,a,d) => {
       s.partyId &&
