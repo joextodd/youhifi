@@ -5,13 +5,13 @@ import { $icon } from '../helpers/element'
 import Actuate from 'actuatejs'
 import animate from 'animate.css'
 
-export default (a) =>
+export default (a,d) =>
   div({
     class: 'popup',
     oncreate: e => {
-      Actuate('fadeIn fadeOut')(e).then(_ => a.setPopupVisible(false))
+      Actuate(d.animations)(e).then(_ => a.setPopupVisible(false))
     }
   }, [
-    $icon('#check'),
-    span('Added to Queue'),
+    $icon(d.iconId),
+    span(d.text),
   ])

@@ -8,5 +8,9 @@ export default (s,a) =>
   h('combined-page', {}, [
     s.track.id && Player(s,a),
     Search(s,a),
-    s.popupVisible && Popup(a),
+    s.popupVisible && Popup(a, {
+      animations: 'fadeIn fadeOut',
+      iconId: '#check',
+      text: 'Added to Queue'
+    }),
   ])
