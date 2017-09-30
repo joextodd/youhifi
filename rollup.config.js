@@ -1,4 +1,5 @@
 import preroll from 'preroll'
+import autoprefix from "autoprefixer"
 
 const prod = !process.env.ROLLUP_WATCH
 const dev = !!process.env.ROLLUP_WATCH
