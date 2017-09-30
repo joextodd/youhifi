@@ -17,6 +17,7 @@ import './index.css'
 import './spinner.css'
 import './popup.css'
 
+
 // Check for any github-pages 404 redirect
 history.replaceState(null, null, sessionStorage.redirect)
 delete sessionStorage.redirect
@@ -61,24 +62,29 @@ app({
           document.title = track.title
           a.setTrack(track)
           a.setFetching(false)
+          s.searchString.length === 0 &&
+            fetchRelated(id)
+            .then(({items}) => a.setSearchResults(items))
         })
         .catch(_ => a.setError(true))
     }
   },
   events: {
     route: (s,a,d) => {
-      if (d.match === '/') s.track.id && scrollToSearch()
-      if (d.match === '/:id') a.getVideo(d.params.id)
-      if (d.match === '/party/:pid') {
-        a.setPartyId(d.params.pid)
-        a.getPartyQ()
+      if (d.match === '/') s.track.id && a.search() && scrollToSearch()
+      if (d.match === '/:id') {
+        if (d.params.id.length === 11) {
+          a.getVideo(d.params.id)
+        } else {
+          a.setPartyId(d.params.id)
+          a.getPartyQ()            
+        }
       }
     },
   },
   view: [
     ['/', playPage],
     ['/:id', playPage],
-    ['/party/:pid', playPage],
     ['*', lostPage],
   ],
   mixins: [Router, Player, Search, Party],

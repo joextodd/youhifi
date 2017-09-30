@@ -7,10 +7,7 @@ export const Search = () => ({
     searchResults: [],
   },
   events: {
-    loaded: (s,a) => s.router.params.id
-      ? fetchRelated(s.router.params.id)
-          .then(({items}) => a.setSearchResults(items))
-      : a.search()
+    loaded: (s,a) => a.search()
   },
   actions: {
     setSearchString: (s,a,d) => ({ searchString: d || '' }),
