@@ -6,8 +6,6 @@ deploy:
   local_dir: static
   provider: firebase
   skip_cleanup: true
+  project: audiostream-d2fbc
   on:
     branch: master
-env:
-  global:
-    secure: K99SAMtiqvkzhzo+3rkXmJc/LYEa2p8PNi/Js4cKebh7aKMYS+mGBFdePrS7i/ZeCNhOIOHqLMWs+Zmg3QYrdmnDO7waT0HeRKXAvclEBZgZuI0+ZiGhA0579j5OKxW11Fx6JZCvFW+e7eR90Q51NnKJIAq/MPpBKBhSvMoZ8T+B5hfw9CNOEiQT1768hBajMiKS5XFj9Na/hkdZXzbRKj7PDrj6eQnpZqylSEuRutJU0r8+ATVH0wQt2dRQ6dMD8HYZqczDLs1V62B3eoeWlUyfntiBCg2PgMM9epaDsYkJIQ5wRmvPDPGfE3maJHVe1UgQvf3DY7v07ktUjoqqC7utcJArr/tOzjGAUnvERRF2nkQZaYNhm6zWDW1J4d+DetyZuMWQu370FH4zJI3M33asGAyfo8/cBVYLf7TLi3LLT/xkMX1fm2+P+/PDDiXg7T28d/MwkZFWmakQENrj+y6Bi85dHVIa9l3rJbCGdgP+UT55zyhIUp7FbklTjz5q3/Wre87d/4QJkcP53416Tg0wfMBMiEobzyyRzBZjrmz74Fe6HiYFVtYp8gIa9VO4IB4I5Z5LqWXPt5hAkVQczlcLcodStEfUhw1pEKbLndzudX6Q9qNxid4KeI+Q8EERHAAEffvG7PBfDxq3kQX8PQtyWq0PwaIIT11L5to7pKo=
