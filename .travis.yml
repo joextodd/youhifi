@@ -3,7 +3,6 @@ node_js:
 - '7'
 script: npm run build
 deploy:
-  fqdn: audiostream.world
   local_dir: static
   provider: firebase
   skip_cleanup: true
