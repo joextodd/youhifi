@@ -11,7 +11,6 @@ import lostPage from './pages/lost'
 
 import { iOS, scrollToSearch } from './helpers/window'
 import { fetchRelated } from './helpers/youtube'
-import { version } from '../package.json';
 
 import 'whatwg-fetch'
 import './index.css'
@@ -72,7 +71,6 @@ app({
   },
   events: {
     route: (s,a,d) => {
-      console.log(`audiostream version: ${version}`)
       if (d.match === '/') s.track.id && a.search() && scrollToSearch()
       if (d.match === '/:id') {
         if (d.params.id.length === 11) {
