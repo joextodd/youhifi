@@ -1,4 +1,5 @@
 import { h, app, Router } from 'hyperapp'
+import logger from '@hyperapp/logger'
 import smoothscroll from 'smoothscroll-polyfill'
 
 import { Player } from './mixins/player'
@@ -38,14 +39,14 @@ app({
     setTrack: (s,a,d) => ({ track: d }),
     prevVideo: (s,a,d) => window.history.back(),
     nextVideo: (s,a,d) => {
-      if (s.partyId) {
+      if (s.partyId && s.partyQ.length > 1) {
         a.nextQTrack()
       } else {
         a.setFetching(true)
         a.setTrack({ id: s.track.id })
         fetchRelated(s.track.id)
           .then(data => data.items[parseInt(Math.random() * data.items.length)].id.videoId)
-          .then(id => a.router.go(`/${id}`))
+          .then(id => s.partyId ? a.getVideo(id) : a.router.go(`/${id}`))
           .catch(console.log)
       }
     },
@@ -61,7 +62,7 @@ app({
           a.setTrack(track)
           a.setFetching(false)
         })
-        .catch(console.log)
+        .catch(_ => a.setError(true))
     }
   },
   events: {
