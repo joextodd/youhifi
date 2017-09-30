@@ -1,7 +1,7 @@
 language: node_js
 node_js:
 - '7'
-script: npm run build
+script: npm run deploy
 deploy:
   local_dir: static
   provider: firebase
