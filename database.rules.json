@@ -1,0 +1,8 @@
+{
+  "rules": {
+    "parties": {
+      ".read": true,
+      ".write": true
+    }
+  }
+}
