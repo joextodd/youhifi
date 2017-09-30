@@ -1,11 +1,13 @@
 language: node_js
 node_js:
 - '7'
-script: npm run deploy
+script: npm run build
 deploy:
   local_dir: static
   provider: firebase
   skip_cleanup: true
   project: audiostream-d2fbc
+  token:
+    secure: $FIREBASE_TOKEN
   on:
     branch: master
