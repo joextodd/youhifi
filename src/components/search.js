@@ -2,6 +2,8 @@ import { h } from 'hyperapp'
 import { link, input, ul } from 'huy'
 import { $icon, $ytThumb, $spinner } from '../helpers/element'
 
+import style from '../index.css'
+
 const $title = c => h('title-', {}, c)
 const $form = (p,c) => h('form', p, c)
 
@@ -34,7 +36,7 @@ export default (s,a) =>
       }),
       $icon('#search'),
     ]),
-    ul({ class: 'search-results', infinite: a.fetchResults, },
+    ul({ class: style['search-results'], infinite: a.fetchResults, },
       s.searchResults.map($searchItem(s,a))
     ),
     (s.searchString !== '' && $spinner())

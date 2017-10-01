@@ -4,6 +4,8 @@ import { $icon, $ytThumb, $spinner } from '../helpers/element'
 import { secondsToHHMMSS } from '../helpers/youtube'
 import { iOS, iOS_chrome, scrollToSearch, focusOnScrollTop, fix100vh } from '../helpers/window'
 
+import style from '../index.css'
+
 const url = 'https://api.joextodd.com'
 
 const $title = c => h('title-', {}, c)
@@ -18,7 +20,7 @@ const $progress = (time, total) => {
 }
 
 export default (s,a) =>
-  h('player-', Object.assign(fix100vh, focusOnScrollTop), [
+  h('player-', Object.assign(fix100vh, focusOnScrollTop, { class: style.focus }), [
     $ytThumb(s.track.id),
     $title(s.isFetching ? $spinner() : s.track.title),
     !s.isFetching && (s.error
@@ -30,7 +32,7 @@ export default (s,a) =>
       $button({ onclick: a.prevVideo, disabled: !!s.isFetching }, $icon('#previous')),
       $button({ onclick: e => a.seekBy(-10), disabled: !!s.error }, $icon('#rewind')),
       $button({ onclick: a.playPause, disabled: !!s.error,
-        class: s.error ? 'error' : s.playing ? 'pause' : 'play',
+        class: s.error ? style.error : s.playing ? style.pause : style.play,
       }, [$icon('#error'), $icon('#pause'), $icon('#play')]),
       $button({ onclick: e => a.seekBy(10), disabled: !!s.error }, $icon('#forwards')),
       $button({ onclick: a.nextVideo, disabled: !!s.isFetching }, $icon('#next')),

@@ -320,7 +320,7 @@ audio {
   padding-top: 25px;
 }
 
-svg#sheet {
+ body > svg {
   display: none;
 }
 
