@@ -12,7 +12,7 @@
     "deploy": "rollup -c && firebase deploy"
   },
   "devDependencies": {
-    "preroll": "0.1.0"
+    "preroll": "0.2.0"
   },
   "dependencies": {
     "@hyperapp/html": "^0.2.0",
