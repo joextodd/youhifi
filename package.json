@@ -9,9 +9,10 @@
   "scripts": {
     "build": "rollup -c",
     "start": "rollup -c -w",
-    "deploy": "rollup -c && firebase deploy"
+    "deploy": "firebase deploy"
   },
   "devDependencies": {
+    "firebase-tools": "^3.12.0",
     "preroll": "0.2.0"
   },
   "dependencies": {
