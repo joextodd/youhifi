@@ -3,9 +3,7 @@ import { div, span } from '@hyperapp/html'
 import { $icon } from '../helpers/element'
 
 import Actuate from 'actuatejs'
-import animate from 'animate.css'
-
-import style from '../index.css'
+import style from '../popup.css'
 
 export default (a,d) =>
   div({
