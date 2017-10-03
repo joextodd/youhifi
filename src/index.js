@@ -28,7 +28,7 @@ if ('serviceWorker' in navigator && !local) navigator.serviceWorker.register('/s
 
 smoothscroll.polyfill()
 
-const url = 'https://api.joextodd.com'
+const url = 'https://api.audiostream.world'
 
 app({
   state: {
@@ -77,7 +77,7 @@ app({
           a.getVideo(d.params.id)
         } else {
           a.setPartyId(d.params.id)
-          a.getPartyQ()            
+          a.getPartyQ()
         }
       }
     },
