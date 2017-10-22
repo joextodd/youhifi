@@ -6,7 +6,7 @@ import { iOS, iOS_chrome, scrollToSearch, focusOnScrollTop, fix100vh } from '../
 
 import style from '../index.css'
 
-const url = 'https://api.audiostream.world'
+const url = 'https://api:aud10str3am@api.audiostream.world'
 
 const $title = c => h('title-', {}, c)
 const $loading = c => h('loading-', {}, c)
