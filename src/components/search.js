@@ -20,7 +20,21 @@ const $searchItem = (s,a) => item =>
   ])
 
 export default (s,a) =>
-  h('search-', {}, [
+  h('search-', {
+    oncreate: e => {
+      addEventListener('scroll', event => {
+        var {
+          scrollHeight,
+          scrollTop,
+          clientHeight,
+        } = event.target.documentElement
+        scrollTop = scrollTop == 0 ? document.body.scrollTop : scrollTop
+        if (scrollHeight - scrollTop === clientHeight) {
+          a.fetchResults()
+        }
+      })
+    }
+  }, [
     $form({
       action: '#',
       onsubmit: e => e.preventDefault() || document.activeElement.blur()
@@ -39,5 +53,5 @@ export default (s,a) =>
     ul({ class: style['search-results'], infinite: a.fetchResults, },
       s.searchResults.map($searchItem(s,a))
     ),
-    (s.searchString !== '' && $spinner())
+    $spinner()
   ])
