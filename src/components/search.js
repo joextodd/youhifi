@@ -53,5 +53,5 @@ export default (s,a) =>
     ul({ class: style['search-results'], infinite: a.fetchResults, },
       s.searchResults.map($searchItem(s,a))
     ),
-    (s.searchString !== '' && $spinner())
+    $spinner()
   ])

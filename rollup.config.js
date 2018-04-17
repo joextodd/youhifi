@@ -10,8 +10,8 @@ export default {
     file: 'static/index.js',
     sourcemap: dev ? 'inline' : false,
     format: 'iife',
+    intro: `console.log('${name} version: ${version}')`,
   },
-  intro: `console.log('${name} version: ${version}')`,
   plugins: [ ...preroll(dev) ],
   moduleContext: {
     'node_modules/whatwg-fetch/fetch.js': 'window',

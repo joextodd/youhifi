@@ -21,6 +21,7 @@
     "actuatejs": "^1.0.1",
     "huy": "^1.1.0",
     "hyperapp": "^0.9.3",
+    "rollup": "^0.58.0",
     "smoothscroll-polyfill": "^0.3.5",
     "throttle-debounce": "^1.0.1",
     "whatwg-fetch": "^2.0.3"

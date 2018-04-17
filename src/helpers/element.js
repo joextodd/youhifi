@@ -1,5 +1,7 @@
 import { h } from 'hyperapp'
 
+import style from '../spinner.css'
+
 const $svg = (p,c) => h("svg", p, c)
 
 const $use = href =>
@@ -17,6 +19,6 @@ export const $ytThumb = id =>
 export const $icon = href => $svg({}, $use(href))
 
 export const $spinner = () =>
-  h('div', { class: 'spinner' },
-    [1,2,3,4,5].map(x => h('div', { class: `rect${x}` }))
+  h('div', { class: style.spinner },
+    [1,2,3,4,5].map(x => h('div', { class: style[`rect${x}`] }))
   )
