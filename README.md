@@ -2,4 +2,5 @@
 
 Low bandwidth audio streams.
 
-![Screenshot](/static/screenshot.png)
+![Screenshot1](/static/screenshot1.png)
+![Screenshot2](/static/screenshot2.png)
