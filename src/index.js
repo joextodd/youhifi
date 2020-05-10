@@ -27,7 +27,7 @@ if ('serviceWorker' in navigator && !local) navigator.serviceWorker.register('/s
 
 smoothscroll.polyfill()
 
-const url = 'https://api.audiostream.world'
+const url = 'https://stream.joextodd.com'
 
 app({
   state: {

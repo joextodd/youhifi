@@ -1,4 +1,4 @@
-[![Build Status](https://travis-ci.org/joextodd/audiostream.svg?branch=master)](https://travis-ci.org/joextodd/audiostream)
+![deploy](https://github.com/joextodd/youhifi/workflows/deploy/badge.svg)
 
 Low bandwidth music player from YouTube.
 

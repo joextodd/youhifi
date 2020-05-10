@@ -11,8 +11,7 @@ const $searchItem = (s,a) => item =>
   h('a', {
     href: `/${item.id.videoId}`,
     onclick: e => e.preventDefault()
-      || a.savePartyState(item.id.videoId)
-      || (!s.partyId && a.router.go(`/${item.id.videoId}`))
+      || a.router.go(`/${item.id.videoId}`)
       || window.scrollTo(0,0)
   },[
     $ytThumb(item.id.videoId),
