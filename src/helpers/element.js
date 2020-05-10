@@ -12,7 +12,7 @@ const $use = href =>
 const $img = p => h('img', p)
 
 export const $ytThumb = id =>
-    $img({ src: `https://img.youtube.com/vi/${id}/hqdefault.jpg` })
+    $img({ src: `https://img.youtube.com/vi/${id}/mqdefault.jpg` })
 
 export const $icon = href => $svg({}, $use(href))
 
