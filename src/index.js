@@ -4,7 +4,6 @@ import smoothscroll from 'smoothscroll-polyfill'
 
 import { Player } from './mixins/player'
 import { Search } from './mixins/search'
-import { Party } from './mixins/party'
 
 import playPage from './pages/play'
 import lostPage from './pages/lost'
@@ -76,8 +75,8 @@ app({
         if (d.params.id.length === 11) {
           a.getVideo(d.params.id)
         } else {
-          a.setPartyId(d.params.id)
-          a.getPartyQ()
+          //a.setPartyId(d.params.id)
+          //a.getPartyQ()
         }
       }
     },
@@ -87,5 +86,5 @@ app({
     ['/:id', playPage],
     ['*', lostPage],
   ],
-  mixins: [Router, Player, Search, Party],
+  mixins: [Router, Player, Search ],
 })

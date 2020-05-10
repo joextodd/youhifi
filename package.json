@@ -1,6 +1,6 @@
 {
-  "version": "2.0.7",
-  "name": "audiostream",
+  "version": "2.1.0",
+  "name": "you-hifi",
   "description": "Direct high quality audio streams from YouTube",
   "author": "Joe Todd (joextodd@gmail.com)",
   "license": "MIT",
@@ -12,7 +12,7 @@
     "deploy": "firebase deploy"
   },
   "devDependencies": {
-    "firebase-tools": "^7.3.0",
+    "firebase-tools": "^8.2.0",
     "preroll": "0.2.1"
   },
   "dependencies": {
