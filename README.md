@@ -1,3 +1,5 @@
+# [YouHiFi](https://you-hifi.web.app)
+
 ![deploy](https://github.com/joextodd/youhifi/workflows/deploy/badge.svg)
 
 Low bandwidth music player from YouTube.
