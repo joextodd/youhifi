@@ -39,16 +39,12 @@ app({
     setTrack: (s,a,d) => ({ track: d }),
     prevVideo: (s,a,d) => window.history.back(),
     nextVideo: (s,a,d) => {
-      if (s.partyId && s.partyQ.length > 1) {
-        a.nextQTrack()
-      } else {
-        a.setFetching(true)
-        a.setTrack({ id: s.track.id })
-        fetchRelated(s.track.id)
-          .then(data => data.items[parseInt(Math.random() * data.items.length)].id.videoId)
-          .then(id => s.partyId ? a.getVideo(id) : a.router.go(`/${id}`))
-          .catch(console.log)
-      }
+      a.setFetching(true)
+      a.setTrack({ id: s.track.id })
+      fetchRelated(s.track.id)
+        .then(data => data.items[parseInt(Math.random() * data.items.length)].id.videoId)
+        .then(id => a.router.go(`/${id}`))
+        .catch(console.log)
     },
     getVideo: (s,a,id) => {
       a.setError(false)
