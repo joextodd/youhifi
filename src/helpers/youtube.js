@@ -1,5 +1,5 @@
 const MAX_RESULTS = 10
-const YT_API_KEY = "AIzaSyBudPwcEKAS7KEyMnyDOPuHUv5pd3vSZ-U"
+const YT_API_KEY = "AIzaSyBZXbCODHf-rThsvZEDB9cUKOFCWKCVh_w"
 
 export const YT_API_SEARCH = 'https://www.googleapis.com/youtube/v3/search?part=snippet'
   + `&maxResults=${MAX_RESULTS}&key=${YT_API_KEY}&type=video&videoCategoryId=10`
