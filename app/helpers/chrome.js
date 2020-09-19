@@ -17,7 +17,6 @@ export const getStorageData = key =>
 
 export const setStorageData = data =>
   new Promise((resolve, reject) => {
-    console.log('setting data')
     chrome.storage.sync.set(data, () =>
       chrome.runtime.lastError
         ? reject(Error(chrome.runtime.lastError.message))
@@ -25,10 +24,18 @@ export const setStorageData = data =>
     )
   })
 
-export const getUrl = (videoId) => 
+export const sendBackground = (message) => 
   new Promise((resolve, reject) =>
-    chrome.runtime.sendMessage({ videoId }, response => {
-      console.log(response)
-      resolve(response)
+    chrome.runtime.sendMessage(message, response => {
+      response.err ? reject(response.err) : resolve(response)
     })
   )
+
+export const listenBackground = (actions) => {
+  chrome.runtime.onMessage.addListener((message, sender, sendResponse) => {
+    if (message.action) {
+      actions[message.action](message.params)
+    }
+  }
+);
+}

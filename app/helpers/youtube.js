@@ -5,12 +5,12 @@ export const YT_API_SEARCH = 'https://www.googleapis.com/youtube/v3/search?part=
   + `&maxResults=${MAX_RESULTS}&key=${YT_DATA_API}&type=video&videoCategoryId=10`
 
 export const fetchRelated = id =>
-  fetch(`${YT_API_SEARCH}&relatedToVideoId=${id}`)
+  fetch(`${YT_API_SEARCH}&relatedToVideoId=${id}&maxResults=${MAX_RESULTS}`)
   .then(r => r.json())
   .catch(console.error)
 
 export const fetchSearchResults = (query='', token='') =>
-  fetch(`${YT_API_SEARCH}&q=${query}&pageToken=${token}`)
+  fetch(`${YT_API_SEARCH}&q=${query}&pageToken=${token}&maxResults=${MAX_RESULTS}`)
   .then(r => r.json())
   .catch(console.error)
 

@@ -2,7 +2,7 @@ import h from '../../lib/hyperapp/h.js'
 import { link, input, ul } from '../../lib/huy.js'
 import { $icon, $ytThumb, $spinner } from '../helpers/element.js'
 
-import { getStorageData, setStorageData, getUrl } from '../helpers/chrome.js'
+import { getStorageData, setStorageData } from '../helpers/chrome.js'
 
 const $title = c => h('title-', {}, c)
 const $form = (p,c) => h('form', p, c)
@@ -51,8 +51,8 @@ export default (s,a) =>
       }),
       $icon('#search'),
     ]),
-    ul({ class: '.search- search-results', infinite: a.fetchResults, },
-      s.searchResults.map($searchItem(s,a))
-    ),
+    // ul({ class: '.search- search-results', infinite: a.fetchResults, },
+    //   s.searchResults.map($searchItem(s,a))
+    // ),
     (s.searchString !== '' && $spinner())
   ])
