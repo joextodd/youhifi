@@ -2,3 +2,4 @@ node_modules
 dist
 static/index.js
 .token
+.DS_Store

@@ -1,8 +1,16 @@
-# [YouHiFi](https://you-hifi.web.app)
+# YouHiFi
 
-![deploy](https://github.com/joextodd/youhifi/workflows/deploy/badge.svg)
+High quality and low bandwidth audio player from YouTube.
 
-Low bandwidth music player from YouTube.
+Available to install as a chrome extension.
 
-![Screenshot1](/static/screenshot1.png)
-![Screenshot2](/static/screenshot2.png)
+Official music videos are not supported.
+
+## Installation
+
+1. Download this repository
+
+2. Type `chrome://extensions` into Google Chrome
+
+3. Click 'Load Unpacked' and open the folder
+
