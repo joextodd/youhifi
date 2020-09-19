@@ -1,6 +1,8 @@
 const YT_INFO_URL = 'https://www.youtube.com/get_video_info'
 
-// Taken from youtube-stream-url
+/**
+ * Taken from youtube-stream-url
+ */
 const parseYouTubeUrl = (str, array) => {
 
     let strArr = String(str).replace(/^&/, '').replace(/&$/, '').split('&');
@@ -103,6 +105,12 @@ const parseYouTubeUrl = (str, array) => {
     }
 };
 
+const clamp = z => (min,max) => Math.min(Math.max(z, min), max)
+
+/**
+ * Receive messages from the extension popup.
+ * This allows us to play audio in the background, and fetch URLs.
+ */
 chrome.runtime.onMessage.addListener((message, sender, sendResponse) => {
     console.log(`Fetching audio stream for ${message.videoId}`)
     fetch(`${YT_INFO_URL}?video_id=${message.videoId}`)
@@ -121,6 +129,39 @@ chrome.runtime.onMessage.addListener((message, sender, sendResponse) => {
             console.error(err)
             sendResponse({ err })
         } else {
+            const player = document.getElementById('player')
+            player.src = audio.url
+            player.play()
+
+            if ('mediaSession' in navigator) {
+                navigator.mediaSession.metadata = new MediaMetadata({
+                    title: info.videoDetails.title,
+                    artist: info.videoDetails.author,
+                    artwork: [{ 
+                        sizes: '320x180',
+                        src: info.videoDetails.thumbnail.thumbnails.slice(-2)[0].url,
+                        type: ''
+                    }]
+                });
+            
+                navigator.mediaSession.setActionHandler('play', function () {
+                    player.play() 
+                });
+                navigator.mediaSession.setActionHandler('pause', function () { 
+                    player.pause() 
+                });
+                navigator.mediaSession.setActionHandler('seekbackward', function () { 
+                    const time = clamp(player.currentTime - 10)(0, player.duration)
+                    player.currentTime = time
+                });
+                navigator.mediaSession.setActionHandler('seekforward', function () { 
+                    const time = clamp(player.currentTime + 10)(0, player.duration)
+                    player.currentTime = time
+                });
+                navigator.mediaSession.setActionHandler('previoustrack', function () { });
+                navigator.mediaSession.setActionHandler('nexttrack', function () { });
+            }
+
             sendResponse({
                 id: message.videoId,
                 title: info.videoDetails.title,
@@ -134,3 +175,16 @@ chrome.runtime.onMessage.addListener((message, sender, sendResponse) => {
     })
     return true
 })
+
+/**
+ * Intercept requests and set the Referer header
+ * so that we can restrict the YouTube API from others
+ */
+chrome.webRequest.onBeforeSendHeaders.addListener(
+    function(details) {
+      details.requestHeaders.push({name: 'Referer', value: 'https://hifi.joextodd.com'});
+      return {requestHeaders: details.requestHeaders};
+    },
+    {urls: ['https://www.googleapis.com/*']},
+    ['blocking', 'requestHeaders']
+);

@@ -2,7 +2,7 @@ import h from '../../lib/hyperapp/h.js'
 import throttle from '../../lib/throttle.js'
 import { $icon, $ytThumb, $spinner } from '../helpers/element.js'
 import { secondsToHHMMSS } from '../helpers/youtube.js'
-import { iOS, iOS_chrome, scrollToSearch, focusOnScrollTop, fix100vh } from '../helpers/window.js'
+import { iOS, scrollToSearch, focusOnScrollTop, fix100vh } from '../helpers/window.js'
 
 const $title = c => h('title-', {}, c)
 const $loading = c => h('loading-', {}, c)
@@ -38,20 +38,20 @@ export default (s,a) =>
       $button({ onclick: a.nextVideo, disabled: !!s.isFetching }, $icon('#next')),
     ]),
     $button({ class: 'player- button.search', onclick: scrollToSearch }, 'Search For Stream'),
-    $audio({
-      src: s.track.url ? s.track.url : '',
-      title: s.track.title,
-      autoplay: !iOS() && 'yes',
-      onerror: _ => a.setError(true),
-      oncanplay: _ => a.setError(false),
-      onended: _ => a.nextVideo(),
-      oncreate: e => {
-        s.player = e
-        s.webm = !!e.canPlayType('audio/webm')
-      },
-      ontimeupdate: throttle(1000, e => {
-        a.setCurrentTime(s.player.currentTime)
-        iOS() && (s.player.currentTime > s.player.duration / 2) && a.nextVideo()
-      }),
-    }),
+    // $audio({
+    //   src: s.track.url ? s.track.url : '',
+    //   title: s.track.title,
+    //   autoplay: !iOS() && 'yes',
+    //   onerror: _ => a.setError(true),
+    //   oncanplay: _ => a.setError(false),
+    //   onended: _ => a.nextVideo(),
+    //   oncreate: e => {
+    //     s.player = e
+    //     s.webm = !!e.canPlayType('audio/webm')
+    //   },
+    //   ontimeupdate: throttle(1000, e => {
+    //     a.setCurrentTime(s.player.currentTime)
+    //     iOS() && (s.player.currentTime > s.player.duration / 2) && a.nextVideo()
+    //   }),
+    // }),
   ])

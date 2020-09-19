@@ -1,6 +1,6 @@
 import h from '../lib/hyperapp/h.js'
 import app from '../lib/hyperapp/app.js'
-// import smoothscroll from '../lib/smoothscroll.js'
+import smoothscroll from '../lib/smoothscroll.js'
 
 import { Player } from './mixins/player.js'
 import { Search } from './mixins/search.js'
@@ -9,9 +9,17 @@ import playPage from './pages/play.js'
 
 import { iOS, scrollToSearch } from './helpers/window.js'
 import { fetchRelated } from './helpers/youtube.js'
-import { listenStorage, getStorageData, setStorageData, getUrl } from './helpers/chrome.js'
+import { listenStorage, setStorageData, getUrl } from './helpers/chrome.js'
 
-// smoothscroll.polyfill()
+smoothscroll()
+
+/*
+TODO:
+  - Remove official videos from search
+  - Fix next track autoplay
+  - Fix player CSS
+  - Final tidy ups
+*/
 
 app({
   state: {
@@ -50,7 +58,7 @@ app({
     }
   },
   events: {
-    init: (s,a) => listenStorage(a)
+    init: (s,a) => listenStorage(a) || a.getVideo('LHEfFCIVXpQ')
   },
   view: playPage,
   mixins: [Player, Search],
