@@ -38,11 +38,10 @@ const globalMediaSettings = (player, info) => {
       chrome.runtime.sendMessage({ action: 'setCurrentTime', params: time })
     });
     navigator.mediaSession.setActionHandler('previoustrack', function () {
-      console.log('Setting prev track')
+      chrome.runtime.sendMessage({ action: 'prevVideo' })
     });
     navigator.mediaSession.setActionHandler('nexttrack', function () {
-      console.log('Setting next track')
-      // chrome.runtime.sendMessage({ action: 'nextVideo' })
+      chrome.runtime.sendMessage({ action: 'nextVideo' })
     });
   }
 }
