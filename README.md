@@ -12,5 +12,5 @@ Official music videos are not supported.
 
 2. Type `chrome://extensions` into Google Chrome
 
-3. Click 'Load Unpacked' and open the folder
+3. Click 'Load Unpacked' and open the 'YouHiFi' folder
 
