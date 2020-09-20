@@ -9,15 +9,17 @@ import playPage from './pages/play.js'
 
 import { iOS, scrollToSearch } from './helpers/window.js'
 import { fetchRelated } from './helpers/youtube.js'
-import { listenStorage, setStorageData, sendBackground, listenBackground } from './helpers/chrome.js'
+import { sendBackground, listenBackground } from './helpers/chrome.js'
 
 smoothscroll()
 
 /*
 TODO:
-  - Enable previous track, by storing last ten items in storage
-  - Remove official videos from search
-  - Final tidy ups
+- Enable previous track, by storing last n items in storage and a current track pointer
+- Enable next and previous videos
+- Fix bug where background is trying to navigate to /undefined
+- Better error logging when adaptiveFormats not available
+- Fix player focus
 */
 
 app({
@@ -31,12 +33,11 @@ app({
     prevVideo: (s,a,d) => window.history.back(),
     nextVideo: (s,a,d) => {
       console.log('fetching next video')
-      // a.setFetching(true)
-      // a.setTrack({ id: s.track.id })
-      // fetchRelated(s.track.id)
-      //   .then(data => data.items[parseInt(Math.random() * data.items.length)].id.videoId)
-      //   .then(id => setStorageData({ id }))
-      //   .catch(console.error)
+      a.setFetching(true)
+      fetchRelated(s.track.id)
+        .then(data => data.items[parseInt(Math.random() * data.items.length)].id.videoId)
+        .then(id => a.getVideo(id))
+        .catch(console.error)
     },
     getVideo: (s,a,id) => {
       a.setError(false)
@@ -46,31 +47,26 @@ app({
         console.log(track)
         a.setTrack(track)
         a.setFetching(false)
-        console.log(s)
-        // s.searchString.length === 0 &&
-        //     fetchRelated(id)
-        //     .then(({items}) => a.setSearchResults(items))
+        s.searchString.length === 0 &&
+            fetchRelated(id)
+            .then(({items}) => a.setSearchResults(items))
       })
       .catch(_ => a.setError(true))
-    },
-    storageUpdate: (s,a,d) => {
-      console.log(d)
-      if (d.id && d.id !== s.track.id) {
-        getVideo(d.id)
-      }
     }
   },
   events: {
     init: (s,a) => {
-      console.log('INIT')
       console.log(s)
-      listenStorage(a)
       listenBackground(a)
       sendBackground({ initPlayer: true })
       sendBackground({ getCurrentTrack: true }).then(track => {
-        track && a.getVideo(track.id)
+        if (track.id) {
+          a.setTrack(track)
+          a.setError(false)
+          a.setFetching(false)
+          a.setPlaying(track.playing)
+        }
       })
-      a.getVideo('C35OJ81vv9g')
     }
   },
   view: playPage,

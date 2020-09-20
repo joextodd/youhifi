@@ -1,11 +1,3 @@
-export const listenStorage = (actions) => {
-  chrome.storage.onChanged.addListener((changes, namespace) => {
-    for (var key in changes) {
-      actions.storageUpdate({ [key]: changes[key].newValue })
-    }
-  })
-}
-
 export const getStorageData = key =>
   new Promise((resolve, reject) =>
     chrome.storage.sync.get(key, result =>

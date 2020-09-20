@@ -1,8 +1,6 @@
 import h from '../../lib/hyperapp/h.js'
-import { link, input, ul } from '../../lib/huy.js'
+import { input, ul } from '../../lib/huy.js'
 import { $icon, $ytThumb, $spinner } from '../helpers/element.js'
-
-import { getStorageData, setStorageData } from '../helpers/chrome.js'
 
 const $title = c => h('title-', {}, c)
 const $form = (p,c) => h('form', p, c)
@@ -12,8 +10,8 @@ const $searchItem = (s,a) => item =>
     href: `/${item.id.videoId}`,
     onclick: e => {
       e.preventDefault()
-      setStorageData({ id: item.id.videoId })
-      .then(() => window.scrollTo(0,0))
+      a.getVideo(item.id.videoId)
+      window.scrollTo(0,0)
     }
   },[
     $ytThumb(item.id.videoId),
@@ -51,8 +49,8 @@ export default (s,a) =>
       }),
       $icon('#search'),
     ]),
-    // ul({ class: '.search- search-results', infinite: a.fetchResults, },
-    //   s.searchResults.map($searchItem(s,a))
-    // ),
+    ul({ class: '.search- search-results', infinite: a.fetchResults, },
+      s.searchResults.map($searchItem(s,a))
+    ),
     (s.searchString !== '' && $spinner())
   ])

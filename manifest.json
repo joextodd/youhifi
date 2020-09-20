@@ -12,8 +12,6 @@
   },
   "permissions": [
     "storage",
-    "webRequest",
-    "webRequestBlocking",
     "https://www.youtube.com/*",
     "https://www.googleapis.com/*"
   ],

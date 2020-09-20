@@ -2,11 +2,11 @@ import throttle from '../lib/throttle.js'
 import { parseYouTubeUrl } from './helpers/parser.js'
 
 const YT_INFO_URL = 'https://www.youtube.com/get_video_info'
-
-const trackHistory = []
-const currentTrack = null
 const clamp = z => (min,max) => Math.min(Math.max(z, min), max)
 
+/**
+ * Configure Chrome's global media panel.
+ */
 const globalMediaSettings = (player, info) => {
     if ('mediaSession' in navigator) {
         navigator.mediaSession.metadata = new MediaMetadata({
@@ -20,23 +20,19 @@ const globalMediaSettings = (player, info) => {
         });
     
         navigator.mediaSession.setActionHandler('play', function () {
-            console.log('Setting playing')
             player.play()
             chrome.runtime.sendMessage({ action: 'setPlaying', params: true })
         });
-        navigator.mediaSession.setActionHandler('pause', function () { 
-            console.log('Setting pausing')
+        navigator.mediaSession.setActionHandler('pause', function () {
             player.pause()
             chrome.runtime.sendMessage({ action: 'setPlaying', params: false })
         });
-        navigator.mediaSession.setActionHandler('seekbackward', function () { 
-            console.log('Setting seek back')
+        navigator.mediaSession.setActionHandler('seekbackward', function () {
             const time = clamp(player.currentTime + -10)(0, player.duration)
             player.currentTime = time
             chrome.runtime.sendMessage({ action: 'setCurrentTime', params: time })
         });
-        navigator.mediaSession.setActionHandler('seekforward', function () { 
-            console.log('Setting seek forward')
+        navigator.mediaSession.setActionHandler('seekforward', function () {
             const time = clamp(player.currentTime + 10)(0, player.duration)
             player.currentTime = time
             chrome.runtime.sendMessage({ action: 'setCurrentTime', params: time })
@@ -68,6 +64,7 @@ chrome.runtime.onMessage.addListener((message, sender, sendResponse) => {
             }
         })
         player.onended = () => chrome.runtime.sendMessage({ action: 'nextVideo' })
+        sendResponse({ ok: true })
     }
     else if (message.videoId) {
         console.log(`Fetching audio stream for ${message.videoId}`)
@@ -77,26 +74,31 @@ chrome.runtime.onMessage.addListener((message, sender, sendResponse) => {
             let data = {}
             parseYouTubeUrl(response, data)
             let info = JSON.parse(data.player_response)
-            let audio = info.streamingData.adaptiveFormats.find(x => x.audioQuality === 'AUDIO_QUALITY_HIGH')
-            if (!audio) {
-                audio = info.streamingData.adaptiveFormats.find(x => x.audioQuality === 'AUDIO_QUALITY_MEDIUM')
-            }
-            if (!audio) {
-                const err = `Failed to find an audio stream for ${message.videoId}`
-                sendResponse({ err })
+            console.log(info)
+            if (info.streamingData) {
+                let audio = info.streamingData.adaptiveFormats.find(x => x.audioQuality === 'AUDIO_QUALITY_HIGH')
+                if (!audio) {
+                    audio = info.streamingData.adaptiveFormats.find(x => x.audioQuality === 'AUDIO_QUALITY_MEDIUM')
+                }
+                if (!audio) {
+                    const err = `Failed to find an audio stream for ${message.videoId}`
+                    sendResponse({ err })
+                } else {
+                    player.videoId = message.videoId
+                    player.title = info.videoDetails.title
+                    player.src = audio.url
+                    player.play()
+
+                    globalMediaSettings(player, info)
+
+                    sendResponse({
+                        id: message.videoId,
+                        title: info.videoDetails.title,
+                        url: audio.url
+                    })
+                }
             } else {
-                player.title = info.videoDetails.title
-                player.src = audio.url
-                player.play()
-
-                globalMediaSettings(player, info)
-                trackHistory.push(message.videoId)
-
-                sendResponse({
-                    id: message.videoId,
-                    title: info.videoDetails.title,
-                    url: audio.url
-                })
+                sendResponse({ err: 'Audio streaming unavailable' })   
             }
         })
         .catch(err => {
@@ -106,12 +108,12 @@ chrome.runtime.onMessage.addListener((message, sender, sendResponse) => {
         return true
     }
     else if (message.getCurrentTrack) {
-        sendResponse(currentTrack)
-    }
-    else if (message.getPreviousTrack) {
-        if (trackHistory.length() > 1) {
-            sendResponse(trackHistory.slice(-1)[0])
-        }
+        sendResponse({
+            id: player.videoId,
+            title: player.title,
+            playing: !player.paused,
+        })
+        return true
     }
     else if (message.play) {
         player.play()
@@ -133,16 +135,3 @@ chrome.runtime.onMessage.addListener((message, sender, sendResponse) => {
         return true
     }
 })
-
-/**
- * Intercept requests and set the Referer header
- * so that we can restrict the YouTube API from others
- */
-chrome.webRequest.onBeforeSendHeaders.addListener(
-    function(details) {
-      details.requestHeaders.push({name: 'Referer', value: 'https://hifi.joextodd.com'});
-      return {requestHeaders: details.requestHeaders};
-    },
-    {urls: ['https://www.googleapis.com/*']},
-    ['blocking', 'requestHeaders']
-);

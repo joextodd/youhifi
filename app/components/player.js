@@ -1,11 +1,10 @@
 import h from '../../lib/hyperapp/h.js'
 import { $icon, $ytThumb, $spinner } from '../helpers/element.js'
 import { secondsToHHMMSS } from '../helpers/youtube.js'
-import { iOS, scrollToSearch, focusOnScrollTop, fix100vh } from '../helpers/window.js'
+import { scrollToSearch, focusOnScrollTop, fix100vh } from '../helpers/window.js'
 
 const $title = c => h('title-', {}, c)
 const $loading = c => h('loading-', {}, c)
-const $audio = p => h('audio', p)
 const $button = (p,c) => h('button', p, c)
 
 const $progress = (time, total) => {
