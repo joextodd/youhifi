@@ -10,8 +10,8 @@ export const scrollToSearch = () =>
 export const focusOnScrollTop = {
   oncreate: e => {
     e._fn = ev => window.scrollY === 0
-      ? e.classList.add('.focus')
-      : e.classList.remove('.focus')
+      ? e.classList.add('focus')
+      : e.classList.remove('focus')
     e._fn()
     window.addEventListener('scroll', e._fn)
   },

@@ -6,6 +6,7 @@
   "license": "MIT",
   "main": "popup.js",
   "scripts": {
+    "watch": "node-sass -w styles -o styles",
     "build": "node-sass styles -o styles"
   },
   "devDependencies": {
