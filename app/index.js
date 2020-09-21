@@ -16,10 +16,9 @@ smoothscroll()
 
 /*
 TODO:
-- Test out previous/next storage queue
-- Fix bug where background is trying to navigate to /undefined
-- Better error logging when adaptiveFormats not available
+- Better error logging when adaptiveFormats not available (use popup?)
 - Fix player focus
+- Fix bug where background is trying to navigate to /undefined
 */
 
 app({
@@ -45,12 +44,15 @@ app({
           fetchRelated(id)
           .then(({items}) => a.setSearchResults(items))
       })
-      .catch(_ => a.setError(true))
+      .catch(_ => {
+        console.log('ERRORED')
+        a.setFetching(false)
+        a.setError('UNPLAYABLE')
+      })
     }
   },
   events: {
     init: (s,a) => {
-      console.log(s)
       listenBackground(a)
       sendBackground({ initPlayer: true })
       sendBackground({ getCurrentTrack: true }).then(track => {

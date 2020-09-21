@@ -1,5 +1,6 @@
 import h from '../../lib/hyperapp/h.js'
 import { $icon, $ytThumb, $spinner } from '../helpers/element.js'
+import Popup from '../components/popup.js'
 import { secondsToHHMMSS } from '../helpers/youtube.js'
 import { scrollToSearch, focusOnScrollTop, fix100vh } from '../helpers/window.js'
 
@@ -18,11 +19,9 @@ export default (s,a) =>
     $ytThumb(s.track.id),
     $title(s.isFetching ? $spinner() : s.track.title),
     !s.isFetching && (
-      s.error ? 
-        $loading('ERROR') : 
-          s.currentTime === 0 ? 
-            $loading('LOADING') :
-            $progress(s.currentTime, s.duration)),
+      s.currentTime === 0 ? 
+        $loading('LOADING') :
+        $progress(s.currentTime, s.duration)),
     h('controls-', {},[
       $button({ onclick: a.prevVideo, disabled: !!s.isFetching }, $icon('#previous')),
       $button({ onclick: e => a.seekBy(-10), disabled: !!s.error }, $icon('#rewind')),

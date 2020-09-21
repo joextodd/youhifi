@@ -5,14 +5,11 @@ export const History = () => ({
   state: {},
   events: {
     loaded: (s,a) => {
-      console.log('history mixin loaded')
       getStorageData(['currentTrack', 'totalTracks'])
       .catch(() => {
-        console.log('initialising history in storage')
-        setStorageData({
-          'currentTrack': -1,
-          'totalTracks': 0,
-        })
+        console.log('Initialising history in storage')
+        setStorageData({ 'currentTrack': -1 })
+        setStorageData({ 'totalTracks': 0 })
       })
     }
   },
@@ -20,46 +17,48 @@ export const History = () => ({
     storeTrack: (s,a,d) => {
       getStorageData(['currentTrack', 'totalTracks'])
       .then(history => {
+        console.log(`current: ${history.currentTrack}, total: ${history.totalTracks}`)
         if (history.currentTrack + 1 === history.totalTracks) {  // end of queue
-          let update = { currentTrack: s.currentTrack + 1, totalTracks: s.totalTracks + 1 }
-          update[`track${update.currentTrack}`] = track.id
-          console.log('storing...')
-          console.log(update)
-          setStorageData(update)
-          .catch(err => window.alert)
+          let trackKey = `track${history.currentTrack + 1}`
+          setStorageData({ [trackKey]: d })
+          setStorageData({ currentTrack: history.currentTrack + 1})
+          setStorageData({ totalTracks: history.totalTracks + 1 })
+          console.log(`${trackKey}: ${d}`)
         }
       })
     },
     getPrevTrack: (s,a,d) => {
       console.log('fetching prev video')
-      getStorageData('currentTrack').then(currentTrack => {
-        console.log(currentTrack)
-        getStorageData(`track${currentTrack - 1}`)
-        .then(trackId => {
-          console.log(trackId)
-          setStorageData({ currentTrack: currentTrack - 1 })
-          a.getVideo(trackId)
-        })
-        .catch(() => window.alert('No previous track'))
+      getStorageData(['currentTrack', 'totalTracks']).then(r => {
+        console.log(`current: ${r.currentTrack}, total: ${r.totalTracks}`)
+        if (r.currentTrack > 0) {
+          let trackKey = `track${r.currentTrack - 1}`
+          getStorageData(trackKey)
+          .then(t => {
+            setStorageData({ currentTrack: r.currentTrack - 1 })
+            a.getVideo(t[trackKey])
+          })
+        } else {
+          window.alert('No more previous tracks')
+        }
       })
     },
     getNextTrack: (s,a,d) => {
-      console.log('fetching next video')
-      getStorageData('currentTrack').then(currentTrack => {
-        console.log(currentTrack)
-        getStorageData(`track${currentTrack + 1}`)
-        .then(trackId => {
-          console.log(trackId)
-          setStorageData({ currentTrack: currentTrack + 1 })
-          a.getVideo(trackId)
-        })
-        .catch(() => {
+      getStorageData(['currentTrack', 'totalTracks']).then(r => {
+        console.log(`current: ${r.currentTrack}, total: ${r.totalTracks}`)
+        if (r.currentTrack + 1 === r.totalTracks) {  // end of queue
           a.setFetching(true)
           fetchRelated(s.track.id)
             .then(data => data.items[parseInt(Math.random() * data.items.length)].id.videoId)
             .then(id => a.getVideo(id))
             .catch(console.error)
-        })
+        } else {
+          let trackKey = `track${r.currentTrack + 1}`
+          getStorageData(trackKey).then(t => {
+            setStorageData({ currentTrack: r.currentTrack + 1 })
+            a.getVideo(t[trackKey])
+          })
+        }
       })
     },
   },

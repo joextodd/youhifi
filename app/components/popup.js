@@ -7,7 +7,7 @@ export default (a,d) => h('div', [
   $icon(d.iconId),
   h('span', [], d.text)
 ], {
-  class: style.popup,
+  class: '.popup',
   // oncreate: e => {
   //   Actuate(d.animations)(e).then(_ => a.setPopupVisible(false))
   // }
