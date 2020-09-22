@@ -6,22 +6,15 @@ export const Search = () => ({
     searchToken: '',
     searchResults: [],
   },
-  events: {
-    loaded: (s,a) => a.search()
-  },
   actions: {
     setSearchString: (s,a,d) => ({ searchString: d || '' }),
     setSearchToken: (s,a,d) => ({ searchToken: d || '' }),
     setSearchResults: (s,a,d) => ({ searchResults: d }),
-    search: (s,a,d) => {
-      a.setSearchString(d)
-      a.setSearchToken()
-      a.fetchResults()
-    },
     fetchResults: (s,a,d) => {
       const fn = s.searchString ? fetchSearchResults : fetchPopularResults
       fn(s.searchString, s.searchToken)
       .then(({ items, nextPageToken }) => {
+        console.log(items)
         a.setSearchResults(s.searchToken
           ? s.searchResults.concat(items)
           : items

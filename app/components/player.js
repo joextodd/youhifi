@@ -19,9 +19,11 @@ export default (s,a) =>
     $ytThumb(s.track.id),
     $title(s.isFetching ? $spinner() : s.track.title),
     !s.isFetching && (
-      s.currentTime === 0 ? 
-        $loading('LOADING') :
-        $progress(s.currentTime, s.duration)),
+      s.error ? 
+      $loading('UNPLAYABLE') :
+        s.currentTime === 0 ? 
+          $loading('LOADING') :
+          $progress(s.currentTime, s.duration)),
     h('controls-', {},[
       $button({ onclick: a.prevVideo, disabled: !!s.isFetching }, $icon('#previous')),
       $button({ onclick: e => a.seekBy(-10), disabled: !!s.error }, $icon('#rewind')),

@@ -7,31 +7,34 @@ const $form = (p,c) => h('form', p, c)
 
 const $searchItem = (s,a) => item =>
   h('a', {
-    href: `/${item.id.videoId}`,
+    href: `/${item.id.videoId || item.id}`,
     onclick: e => {
       e.preventDefault()
-      a.getVideo(item.id.videoId)
+      a.getVideo(item.id.videoId || item.id)
       window.scrollTo(0,0)
     }
   },[
     $ytThumb(item.id.videoId || item.id),
-    $title(item.snippet.title),
+    $title(item.title || item.snippet.title),
   ])
 
 export default (s,a) =>
   h('search-', {
     oncreate: e => {
-      addEventListener('scroll', event => {
-        var {
-          scrollHeight,
-          scrollTop,
-          clientHeight,
-        } = event.target.documentElement
-        scrollTop = scrollTop == 0 ? document.body.scrollTop : scrollTop
-        if (scrollHeight - scrollTop === clientHeight) {
-          a.fetchResults()
-        }
-      })
+      // addEventListener('scroll', event => {
+      //   var {
+      //     scrollHeight,
+      //     scrollTop,
+      //     clientHeight,
+      //   } = event.target.documentElement
+      //   scrollTop = scrollTop == 0 ? document.body.scrollTop : scrollTop
+      //   if (scrollHeight - scrollTop === clientHeight) {
+      //     console.log(s.historyResults)
+      //     s.historyResults.length ? 
+      //       a.setSearchResults(s.historyResults) :
+      //       a.fetchResults()
+      //   }
+      // })
     }
   }, [
     $form({
@@ -39,7 +42,8 @@ export default (s,a) =>
       onsubmit: e => {
         e.preventDefault()
         document.activeElement.blur()
-        a.search(s.searchString)
+        a.setSearchToken()
+        a.fetchResults()
       }
     }, [
       h('input', {
@@ -55,5 +59,5 @@ export default (s,a) =>
     ul({ class: '.search- search-results', infinite: a.fetchResults, },
       s.searchResults.map($searchItem(s,a))
     ),
-    (s.searchString !== '' && $spinner())
+    ((s.isFetching || s.historyFetching) && $spinner())
   ])

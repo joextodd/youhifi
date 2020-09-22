@@ -9,16 +9,14 @@ import { History } from './mixins/history.js'
 import playPage from './pages/play.js'
 
 import { iOS, scrollToSearch } from './helpers/window.js'
-import { fetchRelated } from './helpers/youtube.js'
-import { getStorageData, setStorageData, sendBackground, listenBackground } from './helpers/chrome.js'
+import { scrapeRelated } from './helpers/youtube.js'
+import { sendBackground, listenBackground } from './helpers/chrome.js'
 
 smoothscroll()
 
 /*
 TODO:
-- If there is a history show that on the home page, otherwise show mostPopular
-- Can we get the next related video without using the API?
-- Can we reduce API usage at any further? Check that search is not used until scrolldown or enter press
+- Separate history component from search, and tidy up
 - Better error logging when adaptiveFormats not available (use popup?)
 */
 
@@ -40,21 +38,22 @@ app({
         console.log(track)
         a.setTrack(track)
         a.setFetching(false)
-        a.storeTrack(track.id)
+        a.storeTrack({ id: track.id, title: track.title })
         s.searchString.length === 0 &&
-          fetchRelated(id)
+          scrapeRelated(id)
           .then(({items}) => a.setSearchResults(items))
       })
       .catch(_ => {
         console.log('ERRORED')
         a.setFetching(false)
-        a.setError('UNPLAYABLE')
+        a.setError(true)
       })
     }
   },
   events: {
     init: (s,a) => {
       listenBackground(a)
+      a.getHistory()
       sendBackground({ initPlayer: true })
       sendBackground({ getCurrentTrack: true }).then(track => {
         if (track.id) {
