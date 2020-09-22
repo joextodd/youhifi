@@ -2,7 +2,7 @@ import h from '../../lib/hyperapp/h.js'
 import { $icon, $ytThumb, $spinner } from '../helpers/element.js'
 import Popup from '../components/popup.js'
 import { secondsToHHMMSS } from '../helpers/youtube.js'
-import { scrollToSearch, focusOnScrollTop, fix100vh } from '../helpers/window.js'
+import { scrollToSearch, focusOnScrollTop } from '../helpers/window.js'
 
 const $title = c => h('title-', {}, c)
 const $loading = c => h('loading-', {}, c)
@@ -15,7 +15,7 @@ const $progress = (time, total) => {
 }
 
 export default (s,a) =>
-  h('player-', Object.assign(fix100vh, focusOnScrollTop, { class: '.player- focus' }), [
+  h('player-', Object.assign(focusOnScrollTop, { class: '.player- focus' }), [
     $ytThumb(s.track.id),
     $title(s.isFetching ? $spinner() : s.track.title),
     !s.isFetching && (

@@ -18,7 +18,3 @@ export const focusOnScrollTop = {
   onremove: e =>
     window.removeEventListener('scroll', e._fn),
 }
-
-export const fix100vh = {
-  // style: { paddingBottom: iOS() && !iOS_chrome() && '100px' }
-}

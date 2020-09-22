@@ -14,7 +14,7 @@ const $searchItem = (s,a) => item =>
       window.scrollTo(0,0)
     }
   },[
-    $ytThumb(item.id.videoId),
+    $ytThumb(item.id.videoId || item.id),
     $title(item.snippet.title),
   ])
 
@@ -36,16 +36,19 @@ export default (s,a) =>
   }, [
     $form({
       action: '#',
-      onsubmit: e => e.preventDefault() || document.activeElement.blur()
+      onsubmit: e => {
+        e.preventDefault()
+        document.activeElement.blur()
+        a.search(s.searchString)
+      }
     }, [
-      input({
+      h('input', {
+        oninput: e => a.setSearchString(e.target.value),
         placeholder: 'Search songs or artists..',
-        action: e => a.search(e.target.value),
         autocomplete: 'off',
         autocorrect: 'off',
         autocapitalize: 'off',
         spellcheck: 'false',
-        debounce: 300,
       }),
       $icon('#search'),
     ]),

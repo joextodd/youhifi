@@ -1,4 +1,4 @@
-import { fetchSearchResults, fetchRelated } from '../helpers/youtube.js'
+import { fetchSearchResults, fetchPopularResults } from '../helpers/youtube.js'
 
 export const Search = () => ({
   state: {
@@ -19,7 +19,8 @@ export const Search = () => ({
       a.fetchResults()
     },
     fetchResults: (s,a,d) => {
-      fetchSearchResults(s.searchString, s.searchToken)
+      const fn = s.searchString ? fetchSearchResults : fetchPopularResults
+      fn(s.searchString, s.searchToken)
       .then(({ items, nextPageToken }) => {
         a.setSearchResults(s.searchToken
           ? s.searchResults.concat(items)

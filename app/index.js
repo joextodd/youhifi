@@ -16,9 +16,10 @@ smoothscroll()
 
 /*
 TODO:
+- If there is a history show that on the home page, otherwise show mostPopular
+- Can we get the next related video without using the API?
+- Can we reduce API usage at any further? Check that search is not used until scrolldown or enter press
 - Better error logging when adaptiveFormats not available (use popup?)
-- Fix player focus
-- Fix bug where background is trying to navigate to /undefined
 */
 
 app({

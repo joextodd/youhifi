@@ -1,13 +1,21 @@
-const MAX_RESULTS = 5
+const MAX_RESULTS = 10
 const YT_DATA_API = 'AIzaSyDhPy8kijXuNd2kM75qldDVAZEh0hYwwmU'
 
-export const YT_API_SEARCH = 'https://www.googleapis.com/youtube/v3/search?part=snippet'
-  + `&maxResults=${MAX_RESULTS}&key=${YT_DATA_API}&type=video&videoCategoryId=10&regionCode=GB`  // maybe need to limit to &videoLicense=creativeCommon?
+const YT_API_SEARCH = 'https://www.googleapis.com/youtube/v3/search?part=snippet'
+  + `&maxResults=${MAX_RESULTS}&key=${YT_DATA_API}&type=video&videoCategoryId=10&regionCode=GB`
+
+const YT_API_VIDEOS = 'https://www.googleapis.com/youtube/v3/videos?part=snippet'
+  + `&maxResults=${MAX_RESULTS}&key=${YT_DATA_API}&videoCategoryId=10&chart=mostPopular&regionCode=GB`
 
 export const fetchRelated = id =>
   fetch(`${YT_API_SEARCH}&relatedToVideoId=${id}`)
   .then(r => r.json())
   .catch(console.error)
+
+export const fetchPopularResults = (query='', token='') => 
+fetch(`${YT_API_VIDEOS}&pageToken=${token}`)
+.then(r => r.json())
+.catch(console.error)
 
 export const fetchSearchResults = (query='', token='') =>
   fetch(`${YT_API_SEARCH}&q=${query}&pageToken=${token}`)
