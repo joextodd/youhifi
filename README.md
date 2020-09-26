@@ -1,6 +1,6 @@
 # YouHiFi
 
-![ScreenCapture](./screencapture.gif)
+![ScreenCapture](./images/screencapture.gif)
 
 High quality and low bandwidth audio player from YouTube.
 

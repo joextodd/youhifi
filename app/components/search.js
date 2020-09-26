@@ -1,5 +1,4 @@
 import h from '../../lib/hyperapp/h.js'
-import { input, ul } from '../../lib/huy.js'
 import { $icon, $ytThumb, $spinner } from '../helpers/element.js'
 
 const $title = c => h('title-', {}, c)
@@ -53,7 +52,7 @@ export default (s,a) =>
       }),
       $icon('#search'),
     ]),
-    ul({ class: '.search- search-results', infinite: a.fetchResults, },
+    h('ul', { class: '.search- search-results' },
       s.searchResults.map($searchItem(s,a))
     ),
     ((s.isFetching || s.historyFetching) && $spinner())
