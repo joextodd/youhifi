@@ -1,8 +1,9 @@
 import throttle from '../lib/throttle.js'
-import { parseYouTubeUrl } from './helpers/parser.js'
 
 const YT_INFO_URL = 'https://www.youtube.com/get_video_info'
 const clamp = z => (min,max) => Math.min(Math.max(z, min), max)
+
+const ytdl = window.require('ytdl-core-browser')({ proxyUrl: '' })
 
 /**
  * Configure Chrome's global media panel.
@@ -11,7 +12,7 @@ const globalMediaSettings = (player, info) => {
   if ('mediaSession' in navigator) {
     navigator.mediaSession.metadata = new MediaMetadata({
       title: info.videoDetails.title,
-      artist: info.videoDetails.author,
+      artist: info.videoDetails.media.artist,
       artwork: [{ 
         sizes: '320x180',
         src: info.videoDetails.thumbnail.thumbnails.slice(-2)[0].url,
@@ -68,43 +69,33 @@ chrome.runtime.onMessage.addListener((message, sender, sendResponse) => {
   }
   else if (message.videoId) {
     console.log(`Fetching audio stream for ${message.videoId}`)
-    fetch(`${YT_INFO_URL}?video_id=${message.videoId}`)
-    .then(r => r.text())
-    .then(response => {
-      let data = {}
-      parseYouTubeUrl(response, data)
-      let info = JSON.parse(data.player_response)
-      console.log(info)
-      if (info.streamingData) {
-        let audio = info.streamingData.adaptiveFormats.find(x => x.audioQuality === 'AUDIO_QUALITY_HIGH')
-        if (!audio) {
-          audio = info.streamingData.adaptiveFormats.find(x => x.audioQuality === 'AUDIO_QUALITY_MEDIUM')
-        }
-        if (!audio) {
-          const err = `Failed to find an audio stream for ${message.videoId}`
-          sendResponse({ err })
-        } else {
-          player.videoId = message.videoId
-          player.title = info.videoDetails.title
-          player.src = audio.url
-          player.play()
-
-          globalMediaSettings(player, info)
-
-          sendResponse({
-            id: message.videoId,
-            title: info.videoDetails.title,
-            url: audio.url
-          })
-        }
+    ytdl.getInfo(message.videoId).then(info => {
+      let audioFormats = ytdl.filterFormats(info.formats, 'audioonly');
+      let audio = audioFormats.find(x => x.audioQuality === 'AUDIO_QUALITY_HIGH')
+      if (!audio) {
+        audio = audioFormats.find(x => x.audioQuality === 'AUDIO_QUALITY_MEDIUM')
+      }
+      if (!audio) {
+        const err = `Failed to find an audio stream for ${message.videoId}`
+        sendResponse({ err })
       } else {
-        sendResponse({ err: 'Audio streaming unavailable' })   
+        player.videoId = message.videoId
+        player.title = info.videoDetails.title
+        player.src = audio.url
+        player.play()
+
+        globalMediaSettings(player, info)
+        sendResponse({
+          id: message.videoId,
+          title: info.videoDetails.title,
+          url: audio.url
+        })
       }
     })
     .catch(err => {
       console.error(err)
       sendResponse({ err })
-    })
+    });
     return true
   }
   else if (message.getCurrentTrack) {

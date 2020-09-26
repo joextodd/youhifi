@@ -13,11 +13,6 @@
     "node-sass": "^4.14.1"
   },
   "dependencies": {
-    "hyperapp": "0.10.0",
-    "actuatejs": "1.0.2",
-    "huy": "1.1.0",
-    "@hyperapp/logger": "0.1.1",
-    "smoothscroll-polyfill": "0.3.6",
-    "throttle-debounce": "1.1.0"
+    "ytdl-core-browser": "^1.0.0"
   }
 }

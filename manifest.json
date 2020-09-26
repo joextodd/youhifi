@@ -21,7 +21,8 @@
     "app/*",
     "lib/*",
     "images/*",
-    "styles/*"
+    "styles/*",
+    "node_modules/*"
   ],
   "browser_action": {
     "default_title": "YouHiFi",
