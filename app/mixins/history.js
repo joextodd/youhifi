@@ -70,7 +70,7 @@ export const History = () => ({
     getHistory: (s,a,d) => {
       getStorageData(null).then(r => {
         let items = []
-        for (let i = 0; i < r.currentTrack; i++) {
+        for (let i = r.currentTrack; i >= 0; i--) {
           let trackKey = `track${i}`
           items.push(JSON.parse(r[trackKey]))
         }

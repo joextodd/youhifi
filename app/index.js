@@ -18,12 +18,26 @@ smoothscroll()
 TODO:
 - Separate history component from search, and tidy up
 - Better error logging when adaptiveFormats not available (use popup?)
+
+- Something playing?
+  -> YES
+    -> Show player. Is there a search string?
+      -> YES
+        -> Show search results
+      -> NO 
+        -> Show related and upcoming results
+  -> NO
+    -> Any history stored?
+      -> YES
+        -> Show history in results
+      -> NO
+        -> Show most popular in results
 */
 
 app({
   state: {
     track: {},
-    isFetching: true,
+    isFetching: false,
   },
   actions: {
     setFetching: (s,a,d) => ({ isFetching: d }),
@@ -44,9 +58,9 @@ app({
           .then(({items}) => a.setSearchResults(items))
       })
       .catch(_ => {
-        console.log('ERRORED')
         a.setFetching(false)
-        a.setError(true)
+        a.setError('UNPLAYABLE')
+        console.error('UNPLAYABLE')
       })
     }
   },

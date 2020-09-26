@@ -5,7 +5,7 @@ import { $icon } from '../helpers/element.js'
 
 export default (a,d) => h('div', [
   $icon(d.iconId),
-  h('span', [], d.text)
+  h('span', d.text)
 ], {
   class: '.popup',
   // oncreate: e => {

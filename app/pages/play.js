@@ -8,9 +8,9 @@ export default (s,a) =>
   h('combined-page', {}, [
     s.track.id && Player(s,a),
     Search(s,a),
-    s.error && Popup(a, {
-      // animations: 'fadeIn fadeOut',
-      iconId: '#check',
-      text: s.error
-    }),
+    // s.error && Popup(a, {
+    //   // animations: 'fadeIn fadeOut',
+    //   iconId: '#check',
+    //   text: s.error
+    // }),
   ])

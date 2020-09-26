@@ -52,7 +52,7 @@ export const scrapeRelated = id => new Promise((resolve, reject) => {
       if (idIdx >= 0 && titleIdx >= 0) {
         related.items.push({
           id: data[idIdx].split('id=')[1],
-          title: data[titleIdx].split('title=')[1].replace('+', ' ')
+          title: decodeURIComponent(data[titleIdx].split('title=')[1]).replaceAll('+', ' ')
         })
       }
     }
