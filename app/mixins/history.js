@@ -9,12 +9,12 @@ export const History = () => ({
     loaded: (s,a) => {
       getStorageData(['currentTrack', 'totalTracks'])
       .then(r => {
+        // chrome.storage.sync.clear()
         if (r.currentTrack == undefined) {
           console.log('Initialising history in storage')
           setStorageData({ 'currentTrack': -1 })
           setStorageData({ 'totalTracks': 0 })
         }
-        // chrome.storage.sync.clear()
       })
     }
   },

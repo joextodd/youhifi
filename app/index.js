@@ -14,7 +14,7 @@ smoothscroll()
 
 /*
 TODO:
-- Related videos are lost from state when the popup is closed
+- Add clear history button?
 
 - Something playing?
   -> YES

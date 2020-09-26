@@ -1,6 +1,7 @@
 # YouHiFi
 
-![ScreenCapture](./images/screencapture.gif)
+| ![Player](./images/screenshot1.png) | ![Search](./images/screenshot2.png) |
+|:-----------------------------------:|:-----------------------------------:|
 
 High quality and low bandwidth audio player from YouTube.
 
