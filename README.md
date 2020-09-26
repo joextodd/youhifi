@@ -1,5 +1,7 @@
 # YouHiFi
 
+![ScreenCapture](./screencapture.gif)
+
 High quality and low bandwidth audio player from YouTube.
 
 Available to install as a chrome extension.

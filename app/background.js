@@ -1,5 +1,6 @@
 import throttle from '../lib/throttle.js'
 
+let relatedVideos = []
 const clamp = z => (min,max) => Math.min(Math.max(z, min), max)
 const ytdl = window.require('ytdl-core-browser')({ proxyUrl: '' })
 
@@ -63,6 +64,9 @@ chrome.runtime.onMessage.addListener((message, sender, sendResponse) => {
     })
     player.onended = () => chrome.runtime.sendMessage({ action: 'nextVideo' })
     chrome.runtime.sendMessage({ action: 'setPlaying', params: !player.paused })
+    if (relatedVideos.length) {
+      chrome.runtime.sendMessage({ action: 'setSearchResults', params: relatedVideos })
+    }
     sendResponse({ ok: true })
   }
   else if (message.videoId) {
@@ -78,6 +82,7 @@ chrome.runtime.onMessage.addListener((message, sender, sendResponse) => {
         const err = `Failed to find an audio stream for ${message.videoId}`
         sendResponse({ err })
       } else {
+        relatedVideos = info.related_videos
         player.videoId = message.videoId
         player.title = info.videoDetails.title
         player.src = audio.url

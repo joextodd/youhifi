@@ -4,7 +4,6 @@ import { scrapeRelated } from '../helpers/youtube.js'
 export const History = () => ({
   state: {
     historyFetching: true,
-    historyResults: []
   },
   events: {
     loaded: (s,a) => {
@@ -21,7 +20,6 @@ export const History = () => ({
   },
   actions: {
     setHistoryFetching: (s,a,d) => ({ historyFetching: d }),
-    setHistoryResults: (s,a,d) => ({ historyResults: d }),
     storeTrack: (s,a,d) => {
       getStorageData(['currentTrack', 'totalTracks'])
       .then(history => {
@@ -80,7 +78,6 @@ export const History = () => ({
           items.push(JSON.parse(r[trackKey]))
         }
         console.log(items)
-        a.setHistoryResults(items)
         a.setHistoryFetching(false)
         items.length ? 
           a.setSearchResults(items) :
