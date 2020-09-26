@@ -65,7 +65,7 @@ export const History = () => ({
           let trackKey = `track${r.currentTrack + 1}`
           getStorageData(trackKey).then(t => {
             setStorageData({ currentTrack: r.currentTrack + 1 })
-            a.getVideo(t[trackKey].id)
+            a.getVideo(JSON.parse(t[trackKey]).id)
           })
         }
       })
