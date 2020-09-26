@@ -9,11 +9,13 @@ export const History = () => ({
   events: {
     loaded: (s,a) => {
       getStorageData(['currentTrack', 'totalTracks'])
-      // .then(() => chrome.storage.sync.clear())
-      .catch(() => {
-        console.log('Initialising history in storage')
-        setStorageData({ 'currentTrack': -1 })
-        setStorageData({ 'totalTracks': 0 })
+      .then(r => {
+        if (r.currentTrack == undefined) {
+          console.log('Initialising history in storage')
+          setStorageData({ 'currentTrack': -1 })
+          setStorageData({ 'totalTracks': 0 })
+        }
+        // chrome.storage.sync.clear()
       })
     }
   },
@@ -41,8 +43,9 @@ export const History = () => ({
           let trackKey = `track${r.currentTrack - 1}`
           getStorageData(trackKey)
           .then(t => {
+            console.log(t[trackKey])
             setStorageData({ currentTrack: r.currentTrack - 1 })
-            a.getVideo(t[trackKey])
+            a.getVideo(JSON.parse(t[trackKey]).id)
           })
         } else {
           window.alert('No more previous tracks')
@@ -54,15 +57,17 @@ export const History = () => ({
         console.log(`current: ${r.currentTrack}, total: ${r.totalTracks}`)
         if (r.currentTrack + 1 === r.totalTracks) {  // end of queue
           a.setFetching(true)
-          scrapeRelated(s.track.id)
-            .then(data => data.items[parseInt(Math.random() * data.items.length)].id)
-            .then(id => a.getVideo(id))
-            .catch(console.error)
+          s.searchResults.length ? 
+            a.getVideo(s.searchResults[parseInt(Math.random() * s.searchResults.length)].id) :
+            scrapeRelated(s.track.id)
+              .then(data => data.items[parseInt(Math.random() * data.items.length)].id)
+              .then(id => a.getVideo(id))
+              .catch(console.error)
         } else {
           let trackKey = `track${r.currentTrack + 1}`
           getStorageData(trackKey).then(t => {
             setStorageData({ currentTrack: r.currentTrack + 1 })
-            a.getVideo(t[trackKey])
+            a.getVideo(t[trackKey].id)
           })
         }
       })

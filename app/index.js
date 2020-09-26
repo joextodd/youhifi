@@ -8,16 +8,13 @@ import { History } from './mixins/history.js'
 
 import playPage from './pages/play.js'
 
-import { iOS, scrollToSearch } from './helpers/window.js'
-import { scrapeRelated } from './helpers/youtube.js'
 import { sendBackground, listenBackground } from './helpers/chrome.js'
 
 smoothscroll()
 
 /*
 TODO:
-- Separate history component from search, and tidy up
-- Better error logging when adaptiveFormats not available (use popup?)
+- Related videos are lost from state when the popup is closed
 
 - Something playing?
   -> YES
@@ -47,17 +44,18 @@ app({
     getVideo: (s,a,id) => {
       a.setError(false)
       a.setFetching(true)
-      a.setPlaying(!iOS())
+      a.setPlaying(false)
+      a.setTrack({ id })
       sendBackground({ videoId: id }).then(track => {
         console.log(track)
         a.setTrack(track)
+        a.setPlaying(true)
         a.setFetching(false)
         a.storeTrack({ id: track.id, title: track.title })
-        s.searchString.length === 0 &&
-          scrapeRelated(id)
-          .then(({items}) => a.setSearchResults(items))
+        track.related.length && a.setSearchResults(track.related)
       })
       .catch(_ => {
+        s.searchResults.length && a.setSearchResults(s.searchResults.slice(1))
         a.setFetching(false)
         a.setError('UNPLAYABLE')
         console.error('UNPLAYABLE')

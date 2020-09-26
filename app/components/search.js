@@ -29,10 +29,7 @@ export default (s,a) =>
       //   } = event.target.documentElement
       //   scrollTop = scrollTop == 0 ? document.body.scrollTop : scrollTop
       //   if (scrollHeight - scrollTop === clientHeight) {
-      //     console.log(s.historyResults)
-      //     s.historyResults.length ? 
-      //       a.setSearchResults(s.historyResults) :
-      //       a.fetchResults()
+      //     // Reached end of scroll
       //   }
       // })
     }

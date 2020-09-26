@@ -1,8 +1,6 @@
 import throttle from '../lib/throttle.js'
 
-const YT_INFO_URL = 'https://www.youtube.com/get_video_info'
 const clamp = z => (min,max) => Math.min(Math.max(z, min), max)
-
 const ytdl = window.require('ytdl-core-browser')({ proxyUrl: '' })
 
 /**
@@ -70,6 +68,7 @@ chrome.runtime.onMessage.addListener((message, sender, sendResponse) => {
   else if (message.videoId) {
     console.log(`Fetching audio stream for ${message.videoId}`)
     ytdl.getInfo(message.videoId).then(info => {
+      console.log(info)
       let audioFormats = ytdl.filterFormats(info.formats, 'audioonly');
       let audio = audioFormats.find(x => x.audioQuality === 'AUDIO_QUALITY_HIGH')
       if (!audio) {
@@ -88,7 +87,8 @@ chrome.runtime.onMessage.addListener((message, sender, sendResponse) => {
         sendResponse({
           id: message.videoId,
           title: info.videoDetails.title,
-          url: audio.url
+          url: audio.url,
+          related: info.related_videos,
         })
       }
     })

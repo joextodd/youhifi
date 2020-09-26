@@ -16,7 +16,7 @@ export const secondsToHHMMSS = seconds => {
     `${m < 10 ? `0${m}` : m}:${s < 10 ? `0${s}` : s}`
 }
 
-export const fetchPopularResults = (query='', token='') => 
+export const fetchPopularResults = (query='', token='') =>
 fetch(`${YT_API_VIDEOS}&pageToken=${token}`)
 .then(r => r.json())
 .catch(console.error)
