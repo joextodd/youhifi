@@ -70,7 +70,7 @@ search- {
     fill: rgba(255, 255, 255, 0.5);
   }
   .search-results {
-    padding: 1rem;
+    margin-top: 1rem;
     > *+* { margin-top: 1rem; }
     &:empty {
       min-height: 90vh;
@@ -290,7 +290,6 @@ combined-page {
 
   search- {
     position: relative;
-    margin-top: 25vh;
     max-width: 25rem;
     margin-left: auto;
     margin-right: auto;
