@@ -12,13 +12,13 @@ const globalMediaSettings = (player, info) => {
     navigator.mediaSession.metadata = new MediaMetadata({
       title: info.videoDetails.title,
       artist: info.videoDetails.media.artist,
-      artwork: [{ 
+      artwork: [{
         sizes: '320x180',
         src: info.videoDetails.thumbnail.thumbnails.slice(-2)[0].url,
         type: ''
       }]
     });
-  
+
     navigator.mediaSession.setActionHandler('play', function () {
       player.play()
       chrome.runtime.sendMessage({ action: 'setPlaying', params: true })
@@ -137,7 +137,7 @@ chrome.runtime.onMessage.addListener((message, sender, sendResponse) => {
  */
 const extraInfoSpec = ['blocking', 'requestHeaders'];
 if (chrome.webRequest.OnBeforeSendHeadersOptions.hasOwnProperty('EXTRA_HEADERS')) extraInfoSpec.push('extraHeaders');
-  
+
 chrome.webRequest.onBeforeSendHeaders.addListener(function(details) {
   var newRef = "https://hifi.joextodd.com";
   var gotRef = false;

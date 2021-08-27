@@ -7,7 +7,8 @@
   "main": "popup.js",
   "scripts": {
     "watch": "node-sass -w styles -o styles",
-    "build": "node-sass styles -o styles"
+    "build": "node-sass styles -o styles",
+    "update": "cd node_modules/ytdl-core-browser && npm install ytdl-core@latest && npm install @types/node && npm install && npm run build"
   },
   "devDependencies": {
     "node-sass": "^4.14.1"
