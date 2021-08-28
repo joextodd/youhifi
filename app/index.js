@@ -15,20 +15,6 @@ smoothscroll()
 /*
 TODO:
 - Add clear history button?
-
-- Something playing?
-  -> YES
-    -> Show player. Is there a search string?
-      -> YES
-        -> Show search results
-      -> NO 
-        -> Show related and upcoming results
-  -> NO
-    -> Any history stored?
-      -> YES
-        -> Show history in results
-      -> NO
-        -> Show most popular in results
 */
 
 app({
@@ -54,7 +40,8 @@ app({
         a.storeTrack({ id: track.id, title: track.title })
         track.related.length && a.setSearchResults(track.related)
       })
-      .catch(_ => {
+      .catch(err => {
+        console.error(err)
         s.searchResults.length && a.setSearchResults(s.searchResults.slice(1))
         a.setFetching(false)
         a.setError('UNPLAYABLE')

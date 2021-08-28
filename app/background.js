@@ -1,5 +1,6 @@
 import throttle from '../lib/throttle.js'
 
+
 let relatedVideos = []
 const clamp = z => (min,max) => Math.min(Math.max(z, min), max)
 const ytdl = window.require('ytdl-core-browser')({ proxyUrl: '' })
@@ -131,27 +132,3 @@ chrome.runtime.onMessage.addListener((message, sender, sendResponse) => {
     return true
   }
 })
-
-/**
- * Set a referer header for API restrictions.
- */
-const extraInfoSpec = ['blocking', 'requestHeaders'];
-if (chrome.webRequest.OnBeforeSendHeadersOptions.hasOwnProperty('EXTRA_HEADERS')) extraInfoSpec.push('extraHeaders');
-
-chrome.webRequest.onBeforeSendHeaders.addListener(function(details) {
-  var newRef = "https://hifi.joextodd.com";
-  var gotRef = false;
-  for (var n in details.requestHeaders) {
-    gotRef = details.requestHeaders[n].name.toLowerCase() == "referer";
-    if (gotRef) {
-      details.requestHeaders[n].value = newRef;
-      break;
-    }
-  }
-  if (!gotRef) {
-    details.requestHeaders.push({ name:"Referer", value:newRef });
-  }
-  return {requestHeaders:details.requestHeaders};
-}, {
-  urls: ["https://www.googleapis.com/*"]
-}, extraInfoSpec);

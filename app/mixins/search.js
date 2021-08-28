@@ -12,14 +12,12 @@ export const Search = () => ({
     setSearchResults: (s,a,d) => ({ searchResults: d }),
     fetchResults: (s,a,d) => {
       const fn = s.searchString ? fetchSearchResults : fetchPopularResults
-      fn(s.searchString, s.searchToken)
-      .then(({ items, nextPageToken }) => {
-        console.log(items)
-        a.setSearchResults(s.searchToken
-          ? s.searchResults.concat(items)
-          : items
+      fn(s.searchString).then(videos => {
+        console.log(videos)
+        a.setSearchResults(s.searchResults
+          ? s.searchResults.concat(videos)
+          : videos
         )
-        a.setSearchToken(nextPageToken)
       }).catch(console.log)
     },
   },

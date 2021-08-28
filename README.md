@@ -11,7 +11,7 @@ Available to install as a chrome extension.
 
 1. Run `npm install`
 
-2. Run `npm build`
+2. Run `npm run build` and `npm run update`
 
 3. Type `chrome://extensions` into Google Chrome
 

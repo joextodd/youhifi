@@ -51,24 +51,13 @@ export const History = () => ({
       })
     },
     getNextTrack: (s,a,d) => {
-      getStorageData(['currentTrack', 'totalTracks']).then(r => {
-        console.log(`current: ${r.currentTrack}, total: ${r.totalTracks}`)
-        if (r.currentTrack + 1 === r.totalTracks) {  // end of queue
-          a.setFetching(true)
-          s.searchResults.length ? 
-            a.getVideo(s.searchResults[parseInt(Math.random() * s.searchResults.length)].id) :
-            scrapeRelated(s.track.id)
-              .then(data => data.items[parseInt(Math.random() * data.items.length)].id)
-              .then(id => a.getVideo(id))
-              .catch(console.error)
-        } else {
-          let trackKey = `track${r.currentTrack + 1}`
-          getStorageData(trackKey).then(t => {
-            setStorageData({ currentTrack: r.currentTrack + 1 })
-            a.getVideo(JSON.parse(t[trackKey]).id)
-          })
-        }
-      })
+      a.setFetching(true)
+      s.searchResults.length ?
+        a.getVideo(s.searchResults[parseInt(Math.random() * s.searchResults.length)].id) :
+        scrapeRelated(s.track.id)
+          .then(data => data.items[parseInt(Math.random() * data.items.length)].id)
+          .then(id => a.getVideo(id))
+          .catch(console.error)
     },
     getHistory: (s,a,d) => {
       getStorageData(null).then(r => {
@@ -79,9 +68,8 @@ export const History = () => ({
         }
         console.log(items)
         a.setHistoryFetching(false)
-        items.length ? 
-          a.setSearchResults(items) :
-            a.fetchResults()
+        a.setSearchResults(items)
+        a.fetchResults()
       })
     }
   },

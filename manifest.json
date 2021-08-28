@@ -14,8 +14,9 @@
     "storage",
     "webRequest",
     "webRequestBlocking",
+    "https://youtube.com/*",
     "https://www.youtube.com/*",
-    "https://www.googleapis.com/*"
+    "https://cdn.skypack.dev/*"
   ],
   "web_accessible_resources": [
     "app/*",
@@ -31,6 +32,7 @@
   "background": {
     "page": "background.html"
   },
+  "content_security_policy": "script-src 'self' https://cdn.skypack.dev 'unsafe-eval'; object-src 'self'",
   "minimum_chrome_version": "65.0.3325",
   "manifest_version": 2
 }

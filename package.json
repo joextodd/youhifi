@@ -14,6 +14,7 @@
     "node-sass": "^4.14.1"
   },
   "dependencies": {
+    "youtube-sr": "^4.1.7",
     "ytdl-core-browser": "^1.0.0"
   }
 }
